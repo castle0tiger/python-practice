@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>AI 챗봇</title>
+</head>
+<body>
+    <h1>AI 챗봇</h1>
+
+    <div>
+        {% for msg in conversation %}
+            {% if msg.role == "user" %}
+                <p><b>나:</b> {{ msg.content }}</p>
+            {% else %}
+                <p><b>AI:</b> {{ msg.content }}</p>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <form action="/chat" method="POST">
+        <input type="text" name="message" placeholder="메시지 입력" style="width:300px">
+        <button type="submit">전송</button>
+    </form>
+</body>
+</html>
