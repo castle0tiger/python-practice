@@ -388,6 +388,35 @@ app_db.py  →  DB 저장 (INSERT)
 
 ---
 
+## 클라우드 배포 (Render)
+**배포 URL:** `https://python-practice-rmyn.onrender.com`
+
+### 배포 준비 파일
+```
+requirements.txt  →  필요한 패키지 목록
+gunicorn          →  프로덕션 서버 (로컬의 flask run 대신)
+```
+
+### 배포 과정
+1. `requirements.txt` 생성 (flask, groq, python-dotenv, gunicorn)
+2. `chatbot.py` 포트 환경변수 설정: `os.environ.get("PORT", 5002)`
+3. GitHub 푸시
+4. Render → New Web Service → GitHub 레포 연결
+5. Build Command: `pip install -r requirements.txt`
+6. Start Command: `gunicorn chatbot:app`
+7. Environment Variables에 `GROQ_API_KEY` 추가
+8. Deploy
+
+### 로컬 vs 배포 차이
+```
+로컬:    http://127.0.0.1:5002  (내 컴퓨터에서만 접속)
+배포 후: https://python-practice-rmyn.onrender.com  (누구나 접속 가능)
+```
+
+> **주의:** Render 무료 티어는 비활성 시 50초 딜레이 발생
+
+---
+
 ## 다음 학습 계획
 
 **최종 목표: AI 서비스를 직접 만들고 배포할 수 있는 사람**
@@ -399,5 +428,5 @@ app_db.py  →  DB 저장 (INSERT)
 - [x] Flask DB 연결 (SQLite)
 - [x] AI API 연동 (Groq + Flask 챗봇)
 - [x] .env API 키 관리 + .gitignore
-- [ ] 클라우드 배포
+- [x] 클라우드 배포 (Render)
 - [ ] 도메인 결정 후 프로젝트 연결
