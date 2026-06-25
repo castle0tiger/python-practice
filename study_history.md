@@ -320,6 +320,41 @@ print(response.text)
 
 ---
 
+## Groq API + Flask 챗봇
+**파일:** `groq_test.py`, `chatbot.py`, `templates/chat.html`
+
+### 작동 구조
+```
+브라우저 (입력)
+    ↓ POST /chat
+chatbot.py → conversation 리스트에 추가 → Groq API 호출
+    ↓ 응답
+conversation에 assistant 답변 추가 → chat.html 렌더링
+    ↓
+브라우저 (출력)
+```
+
+### 핵심 개념
+- `conversation` 리스트가 대화 기록 전체를 쌓아가며 AI가 맥락을 기억하는 것처럼 동작
+- `role`: `"user"` (사용자), `"assistant"` (AI), `"system"` (행동 지침)
+- LLM은 학습 데이터 컷오프(cutoff) 이후 정보는 모름
+
+### API 키 보안 관리 (.env)
+```
+# .env 파일
+GROQ_API_KEY=실제키값
+
+# 코드에서 불러오기
+from dotenv import load_dotenv
+import os
+load_dotenv()
+api_key = os.getenv("GROQ_API_KEY")
+```
+- `.gitignore` 에 `.env` 추가 → GitHub에 키 노출 방지
+- **실수 포인트:** API 키 코드에 직접 입력 시 GitHub push 차단됨
+
+---
+
 ## Flask DB 연결 (SQLite)
 **파일:** `app_db.py`, `templates/guestbook.html`
 
@@ -362,6 +397,7 @@ app_db.py  →  DB 저장 (INSERT)
 - [x] 클래스 연습
 - [x] GitHub 세팅
 - [x] Flask DB 연결 (SQLite)
-- [ ] AI API 연동 (Gemini/OpenAI)
+- [x] AI API 연동 (Groq + Flask 챗봇)
+- [x] .env API 키 관리 + .gitignore
 - [ ] 클라우드 배포
 - [ ] 도메인 결정 후 프로젝트 연결
