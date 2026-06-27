@@ -586,7 +586,7 @@ h1 { color: blue; }          /* 태그 선택 */
 - [x] 통계 기초 (describe, corr, 산점도)
 - [x] RAG (키워드 방식 → 임베딩 방식)
 - [x] HTML/CSS 기초
-- [ ] 종합 프로젝트
+- [x] 종합 프로젝트 (Python 학습 Q&A 챗봇)
 - [ ] Prompt Engineering
 - [ ] LangChain
 - [ ] FastAPI
