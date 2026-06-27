@@ -1,0 +1,133 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Malgun Gothic', sans-serif;
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.chat-container {
+    width: 100%;
+    max-width: 750px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 90vh;
+}
+
+.chat-header {
+    background-color: #2c7be5;
+    color: white;
+    padding: 16px 24px;
+    font-size: 18px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.clear-btn {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.4);
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.clear-btn:hover {
+    background: rgba(255,255,255,0.3);
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 24px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.welcome {
+    text-align: center;
+    color: #aaa;
+    margin-top: 40px;
+    font-size: 15px;
+}
+
+.msg-user {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.msg-user span {
+    background-color: #2c7be5;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 18px 18px 4px 18px;
+    max-width: 70%;
+    line-height: 1.6;
+}
+
+.msg-ai {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.msg-ai span {
+    background-color: #f0f2f5;
+    color: #333;
+    padding: 10px 16px;
+    border-radius: 18px 18px 18px 4px;
+    max-width: 70%;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+.chat-input {
+    display: flex;
+    padding: 16px;
+    border-top: 1px solid #eee;
+    gap: 10px;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 12px 18px;
+    border: 1px solid #ddd;
+    border-radius: 24px;
+    font-size: 14px;
+    outline: none;
+    font-family: 'Malgun Gothic', sans-serif;
+}
+
+.chat-input input:focus {
+    border-color: #2c7be5;
+}
+
+.chat-input button {
+    padding: 12px 24px;
+    background-color: #2c7be5;
+    color: white;
+    border: none;
+    border-radius: 24px;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: 'Malgun Gothic', sans-serif;
+}
+
+.chat-input button:hover {
+    background-color: #1a6fd4;
+}

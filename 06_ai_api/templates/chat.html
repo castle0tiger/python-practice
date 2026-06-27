@@ -98,7 +98,7 @@
             {% for msg in conversation %}
                 {% if msg.role == "user" %}
                     <div class="msg-user"><span>{{ msg.content }}</span></div>
-                {% else %}
+                {% elif msg.role == "assistant" %}
                     <div class="msg-ai"><span>{{ msg.content }}</span></div>
                 {% endif %}
             {% endfor %}

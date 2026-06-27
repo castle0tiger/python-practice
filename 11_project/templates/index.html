@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Python 학습 Q&A</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <span>🐍 Python 학습 Q&A</span>
+            <form action="/clear" method="POST">
+                <button type="submit" class="clear-btn">대화 초기화</button>
+            </form>
+        </div>
+
+        <div class="chat-messages" id="messages">
+            {% if not conversation %}
+                <div class="welcome">Python 학습 관련 질문을 해보세요!</div>
+            {% endif %}
+            {% for msg in conversation %}
+                {% if msg.role == "user" %}
+                    <div class="msg-user"><span>{{ msg.content }}</span></div>
+                {% else %}
+                    <div class="msg-ai"><span>{{ msg.content }}</span></div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <form action="/chat" method="POST" class="chat-input">
+            <input type="text" name="message" placeholder="Python에 대해 무엇이든 물어보세요" autofocus>
+            <button type="submit">전송</button>
+        </form>
+    </div>
+
+    <script>
+        const messages = document.getElementById('messages');
+        messages.scrollTop = messages.scrollHeight;
+    </script>
+</body>
+</html>

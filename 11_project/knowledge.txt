@@ -1,0 +1,37 @@
+[Python 기초]
+Python은 문법이 간단하고 배우기 쉬운 프로그래밍 언어다.
+변수는 데이터를 저장하는 공간이다. name = "홍길동" 처럼 선언한다.
+조건문은 if, elif, else를 사용한다.
+반복문은 for와 while을 사용한다.
+함수는 def 키워드로 만들고 return으로 값을 반환한다.
+리스트는 순서가 있는 데이터 묶음이다. scores = [90, 85, 78]
+딕셔너리는 key:value 쌍으로 이루어진 데이터다. {"name": "홍길동"}
+
+[pandas]
+pandas는 데이터 분석을 위한 Python 라이브러리다.
+DataFrame은 엑셀 표처럼 행과 열로 이루어진 데이터 구조다.
+groupby()는 특정 열을 기준으로 데이터를 그룹화한다.
+describe()는 평균, 표준편차, 최솟값, 최댓값을 한번에 보여준다.
+corr()는 변수 간 상관관계를 수치로 보여준다.
+fillna()는 결측값을 채우는 함수다.
+merge()는 두 DataFrame을 합치는 함수다.
+
+[Flask]
+Flask는 Python으로 웹 서버를 만드는 라이브러리다.
+@app.route()로 URL과 함수를 연결한다.
+render_template()으로 HTML 파일을 화면에 출력한다.
+request.form으로 사용자가 입력한 폼 데이터를 받는다.
+Jinja2는 Flask의 템플릿 엔진으로 {{ }}, {% %}를 사용한다.
+
+[RAG]
+RAG는 Retrieval-Augmented Generation의 약자다.
+문서를 청크로 나누고, 질문과 유사한 청크를 찾아 AI에 전달하는 기술이다.
+임베딩은 텍스트를 숫자 벡터로 변환하는 것이다.
+코사인 유사도는 두 벡터가 얼마나 비슷한지 측정한다.
+sentence-transformers는 임베딩 생성을 위한 라이브러리다.
+
+[AI API]
+Groq은 무료로 사용 가능한 LLM API 서비스다.
+API 키는 .env 파일에 저장하고 os.getenv()로 불러온다.
+대화 기록은 role(user/assistant/system)과 content로 구성된다.
+system role은 AI의 행동 지침을 설정하는 데 사용된다.
