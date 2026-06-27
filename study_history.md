@@ -516,6 +516,61 @@ pip install sentence-transformers
 
 ---
 
+---
+
+## HTML/CSS 기초
+**파일:** `10_html_css/index.html`, `06_ai_api/templates/chat.html`
+
+### HTML — 구조 (뼈대)
+```html
+<!DOCTYPE html>
+<html>
+<head>  <!-- 브라우저 설정 (제목, 스타일) -->
+  <title>제목</title>
+</head>
+<body>  <!-- 실제 화면에 보이는 내용 -->
+  <h1>제목</h1>
+  <p>문단</p>
+  <ul><li>목록</li></ul>
+  <div>구역 나누기</div>
+</body>
+</html>
+```
+
+### CSS — 디자인 (스타일)
+```css
+/* 선택자 { 속성: 값; } */
+h1 { color: blue; }          /* 태그 선택 */
+.card { padding: 20px; }     /* class 선택 */
+#title { font-size: 24px; }  /* id 선택 */
+```
+
+### 자주 쓰는 CSS 속성
+| 속성 | 역할 |
+|------|------|
+| `color` / `background-color` | 글자/배경 색 |
+| `padding` / `margin` | 안쪽/바깥쪽 여백 |
+| `border-radius` | 모서리 둥글게 |
+| `box-shadow` | 그림자 |
+| `display: flex` | 가로 정렬 |
+| `max-width` / `margin: auto` | 가운데 정렬 |
+
+### CSS 작성 위치
+```
+방법 1 (인라인):  HTML <head> 안에 <style> 태그로 작성
+방법 2 (분리):   style.css 파일 따로 만들고 <link>로 연결 → 실제 서비스 표준
+```
+
+### 실습 결과
+- `index.html`: 순수 HTML → CSS 추가 후 카드 레이아웃으로 변환
+- `chat.html`: 디자인 없는 챗봇 → 말풍선 UI로 변환
+  - 내 메시지: 오른쪽 파란 말풍선
+  - AI 메시지: 왼쪽 회색 말풍선
+
+> **핵심:** HTML은 구조, CSS는 디자인. Flask의 `static/` 폴더가 CSS 파일을 두는 곳.
+
+---
+
 ## 다음 학습 계획
 
 **최종 목표: AI 서비스를 직접 만들고 배포할 수 있는 사람**
@@ -530,5 +585,8 @@ pip install sentence-transformers
 - [x] 클라우드 배포 (Render)
 - [x] 통계 기초 (describe, corr, 산점도)
 - [x] RAG (키워드 방식 → 임베딩 방식)
-- [ ] HTML/CSS 기초
+- [x] HTML/CSS 기초
 - [ ] 종합 프로젝트
+- [ ] Prompt Engineering
+- [ ] LangChain
+- [ ] FastAPI
