@@ -653,6 +653,92 @@ chain.invoke({"topic": "RAG"})
 
 ---
 
+## FastAPI
+**파일:** `14_fastapi/main.py`
+
+### FastAPI란?
+> Python으로 만드는 백엔드 API 서버 프레임워크
+> 프론트엔드(HTML/앱)와 AI/DB 사이에서 교통정리 역할
+
+```
+[프론트엔드]    →    [FastAPI]    →    [AI / DB]
+HTML 화면            중간 처리          Groq, SQLite
+모바일 앱            라우팅
+```
+
+### Flask vs FastAPI
+| 항목 | Flask | FastAPI |
+|------|-------|---------|
+| 용도 | HTML 페이지 서빙 | API 서버 (JSON 반환) |
+| 문서 | 없음 | `/docs` 자동 생성 |
+| 데이터 검증 | 수동 | Pydantic 자동 |
+
+### 핵심 문법
+
+```python
+from fastapi import FastAPI
+from pydantic import BaseModel
+
+app = FastAPI()
+
+# GET 요청
+@app.get("/경로")
+def 함수():
+    return {"key": "value"}  # 자동으로 JSON 반환
+
+# POST 요청 - 데이터 받기
+class 요청모델(BaseModel):
+    field1: str          # 필수
+    field2: str = "기본값"  # 선택
+
+@app.post("/경로")
+def 함수(request: 요청모델):
+    return {"결과": request.field1}
+
+# Path 파라미터 - URL에서 값 받기
+@app.get("/history/{user_name}")
+def 함수(user_name: str):
+    return {"사용자": user_name}
+
+# DELETE 요청
+@app.delete("/history/{user_name}")
+def 함수(user_name: str):
+    return {"message": "삭제 완료"}
+```
+
+### 서버 실행
+```
+python -m uvicorn 14_fastapi.main:app --reload --port 8000
+```
+- `--reload`: 코드 저장 시 자동 재시작
+- `/docs`: Swagger UI 자동 생성 (테스트 가능)
+
+### HTTP 메서드
+| 메서드 | 역할 | 예시 |
+|--------|------|------|
+| GET | 데이터 조회 | 대화 기록 보기 |
+| POST | 데이터 전송/생성 | 질문 보내기 |
+| DELETE | 데이터 삭제 | 기록 초기화 |
+
+### 대화 기록 (in-memory)
+```python
+conversations = {}  # { "사용자이름": [메시지 리스트] }
+
+# 매 요청마다 전체 대화 기록을 Groq에 전달 → AI가 맥락 기억
+messages = [{"role": "system", "content": "..."}] + conversations[user_name]
+```
+- **단점:** 서버 재시작 시 초기화됨 → 영구 저장하려면 SQLite 필요 (11_project 방식)
+
+### HTTP 상태 코드
+| 코드 | 의미 |
+|------|------|
+| 200 | 성공 |
+| 404 | 찾을 수 없음 |
+| 422 | 데이터 형식 오류 (Pydantic 자동 처리) |
+| 500 | 서버 내부 오류 |
+
+---
+
 ## 다음 학습 계획
 
 **최종 목표: AI 서비스를 직접 만들고 배포할 수 있는 사람**
@@ -671,4 +757,5 @@ chain.invoke({"topic": "RAG"})
 - [x] 종합 프로젝트 (Python 학습 Q&A 챗봇)
 - [x] Prompt Engineering
 - [x] LangChain
-- [ ] FastAPI
+- [x] FastAPI
+- [ ] HTML ↔ FastAPI ↔ AI 전체 흐름 연결
