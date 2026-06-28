@@ -571,6 +571,43 @@ h1 { color: blue; }          /* 태그 선택 */
 
 ---
 
+---
+
+## Prompt Engineering
+**파일:** `12_prompt/prompt1.py`
+
+### 핵심 개념
+> 어떻게 질문하느냐에 따라 AI 답변 품질이 완전히 달라진다
+
+### 3가지 기법
+
+| 기법 | 방법 | 효과 |
+|------|------|------|
+| System Prompt | "너는 ~야" 역할 설정 | 톤/대상/성격 제어 |
+| Few-shot | 원하는 형식 예시 제공 | 출력 형식 완벽 제어 |
+| Chain of Thought | "단계별로 생각해" | 복잡한 문제 정확도 향상 |
+
+### 코드 구조
+```python
+client.chat.completions.create(
+    model="llama-3.3-70b-versatile",
+    messages=[
+        {"role": "system", "content": "너는 초등학생 선생님이야"},  # 역할 설정
+        {"role": "user", "content": "파이썬 리스트가 뭐야?"}
+    ]
+)
+```
+
+### 핵심 이해
+```
+일반 사용자  →  채팅창에 직접 입력 (매번 수동)
+개발자       →  System Prompt에 고정 (모든 사용자 자동 적용)
+```
+Claude/ChatGPT/Gemini 채팅창에서 하는 프롬프트 작성과 완전히 동일한 원리.
+AI 서비스 개발자는 사용자 대신 최적의 프롬프트를 미리 설계해두는 역할.
+
+---
+
 ## 다음 학습 계획
 
 **최종 목표: AI 서비스를 직접 만들고 배포할 수 있는 사람**
@@ -587,6 +624,6 @@ h1 { color: blue; }          /* 태그 선택 */
 - [x] RAG (키워드 방식 → 임베딩 방식)
 - [x] HTML/CSS 기초
 - [x] 종합 프로젝트 (Python 학습 Q&A 챗봇)
-- [ ] Prompt Engineering
+- [x] Prompt Engineering
 - [ ] LangChain
 - [ ] FastAPI
