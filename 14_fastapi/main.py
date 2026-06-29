@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from groq import Groq
 from dotenv import load_dotenv
@@ -19,7 +20,7 @@ class QuestionRequest(BaseModel):
 
 @app.get("/")
 def home():
-    return {"message": "FastAPI + Groq AI 서버"}
+    return FileResponse(os.path.join(os.path.dirname(__file__), "static", "index.html"))
 
 @app.post("/ask")
 def ask(request: QuestionRequest):

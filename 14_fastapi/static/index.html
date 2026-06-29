@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>AI 챗봇</title>
+    <style>
+        body { font-family: 'Malgun Gothic', sans-serif; background: #f0f2f5; margin: 0; padding: 20px; }
+        .container { max-width: 700px; margin: 0 auto; background: white; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.1); overflow: hidden; }
+        .header { background: #2c7be5; color: white; padding: 16px 24px; font-size: 18px; font-weight: bold; }
+        .messages { padding: 20px; min-height: 400px; max-height: 500px; overflow-y: auto; }
+        .msg-user { text-align: right; margin: 10px 0; }
+        .msg-user span { background: #2c7be5; color: white; padding: 10px 16px; border-radius: 18px 18px 4px 18px; display: inline-block; max-width: 70%; }
+        .msg-ai { text-align: left; margin: 10px 0; }
+        .msg-ai span { background: #f0f2f5; color: #333; padding: 10px 16px; border-radius: 18px 18px 18px 4px; display: inline-block; max-width: 70%; }
+        .input-area { display: flex; padding: 16px; border-top: 1px solid #eee; gap: 10px; }
+        .input-area input { flex: 1; padding: 12px 16px; border: 1px solid #ddd; border-radius: 24px; font-size: 14px; outline: none; }
+        .input-area button { padding: 12px 24px; background: #2c7be5; color: white; border: none; border-radius: 24px; cursor: pointer; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">AI 챗봇 (FastAPI 연결)</div>
+        <div class="messages" id="messages"></div>
+        <div class="input-area">
+            <input type="text" id="input" placeholder="질문을 입력하세요" />
+            <button onclick="sendMessage()">전송</button>
+        </div>
+    </div>
+
+    <script>
+        async function sendMessage() {
+            const input = document.getElementById('input');
+            const messages = document.getElementById('messages');
+            const question = input.value.trim();
+
+            if (!question) return;
+
+            // 내 메시지 화면에 표시
+            messages.innerHTML += `<div class="msg-user"><span>${question}</span></div>`;
+            input.value = '';
+
+            // FastAPI /ask 에 POST 요청
+            const response = await fetch('/ask', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ question: question, user_name: '사용자' })
+            });
+
+            const data = await response.json();
+
+            // AI 답변 화면에 표시
+            messages.innerHTML += `<div class="msg-ai"><span>${data.AI답변}</span></div>`;
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        // Enter 키로 전송
+        document.getElementById('input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
+</body>
+</html>

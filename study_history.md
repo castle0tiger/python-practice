@@ -739,6 +739,69 @@ messages = [{"role": "system", "content": "..."}] + conversations[user_name]
 
 ---
 
+## HTML ↔ FastAPI ↔ AI 전체 흐름 연결
+**파일:** `14_fastapi/main.py`, `14_fastapi/static/index.html`
+
+### 완성된 흐름
+```
+브라우저 index.html
+    ↓ fetch('/ask', POST)   ← JavaScript가 서버에 요청
+FastAPI /ask 엔드포인트
+    ↓ Groq API 호출
+AI 답변 JSON 반환
+    ↓
+JavaScript가 받아서 화면에 표시 (페이지 새로고침 없음)
+```
+
+### HTML 파일의 3가지 구성
+```html
+<style>  ... </style>   ← CSS (디자인)
+<body>   ... </body>    ← HTML (화면 구조)
+<script> ... </script>  ← JavaScript (동작)
+```
+
+### fetch() — JS에서 서버에 HTTP 요청 보내기
+```javascript
+const response = await fetch('/ask', {
+    method: 'POST',                              // POST 요청
+    headers: { 'Content-Type': 'application/json' },  // JSON 형식임을 알림
+    body: JSON.stringify({ question: question, user_name: '사용자' })  // 보낼 데이터
+});
+const data = await response.json();  // 응답 JSON 파싱
+// data.AI답변 으로 AI 답변 꺼내서 화면에 표시
+```
+- `await` = 응답 올 때까지 기다려
+- `/docs`에서 손으로 했던 것과 동일한 요청을 코드로 자동화한 것
+
+### FileResponse — HTML 파일을 응답으로 보내기
+```python
+from fastapi.responses import FileResponse
+
+@app.get("/")
+def home():
+    return FileResponse("static/index.html")
+    # JSON 대신 HTML 파일 자체를 브라우저에 전송
+```
+
+### Flask vs FastAPI 핵심 차이
+| | 화면 그리는 곳 | 반환값 |
+|---|---|---|
+| Flask | 서버 (Jinja2 템플릿) | HTML 완성본 |
+| FastAPI | 브라우저 (JavaScript) | JSON 데이터 |
+
+### FastAPI가 중요한 이유
+```
+FastAPI /ask 엔드포인트 하나로
+→ 웹 브라우저에서 연결 가능
+→ 모바일 앱에서도 연결 가능
+→ 다른 서버에서도 연결 가능
+→ React 등 어떤 프론트엔드에서도 연결 가능
+```
+Groq API 자체가 FastAPI 방식 — JSON으로 어디서든 호출 가능.
+Flask는 웹 페이지 하나용, FastAPI는 여러 곳과 연결하는 API 서버용.
+
+---
+
 ## 다음 학습 계획
 
 **최종 목표: AI 서비스를 직접 만들고 배포할 수 있는 사람**
@@ -758,4 +821,4 @@ messages = [{"role": "system", "content": "..."}] + conversations[user_name]
 - [x] Prompt Engineering
 - [x] LangChain
 - [x] FastAPI
-- [ ] HTML ↔ FastAPI ↔ AI 전체 흐름 연결
+- [x] HTML ↔ FastAPI ↔ AI 전체 흐름 연결
