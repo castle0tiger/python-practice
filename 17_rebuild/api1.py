@@ -1,4 +1,10 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
+
+class RegisterRequest(BaseModel):
+    name: str           # 문자열, 필수
+    score: int          # 정수, 필수
+    absence: int = 0   # 정수, 선택(기본값 = 0)
 
 app = FastAPI()
 
@@ -18,3 +24,13 @@ def get_scores():
     average = total / len(scores)
 
     return {"개수": len(scores), "총합": total, "평균": average}
+
+
+@app.post("/register")
+def post_register(register: RegisterRequest):
+    if register.score >= 80 and register.absence <= 2:
+        result = "합격"
+    else: 
+        result = "불합격"    
+        
+    return {"이름": register.name, "점수": register.score, "판정": result}
