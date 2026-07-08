@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+from fastapi.responses import FileResponse
 
 class RegisterRequest(BaseModel):
     name: str           # 문자열, 필수
@@ -34,3 +35,8 @@ def post_register(register: RegisterRequest):
         result = "불합격"    
         
     return {"이름": register.name, "점수": register.score, "판정": result}
+
+
+@app.get("/page")
+def get_page():
+    return FileResponse("17_rebuild/chat.html")

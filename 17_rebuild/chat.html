@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI 챗봇</title>
+</head>
+<body>
+    <h1>AI 챗봇</h1>
+
+    <input type="text" id="msg_input" placeholder="메시지 입력">
+    <button onclick="send()">전송</button>
+
+    <div id="msg_list"></div>
+
+    <script>
+        function send() {
+            const box = document.getElementById("msg_input");
+            if (box.value === "") {
+                return;
+            }
+            const list = document.getElementById("msg_list");
+            list.innerHTML += "<p>" + box.value + "</p>";
+            box.value = "";
+        }
+    </script>
+</body>
+
+</html>
