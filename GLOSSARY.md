@@ -29,6 +29,11 @@ end+point: 요청이 도착하는 종착 지점.
 요청의 종류. GET = 데이터 달라 (조회), POST = 데이터 보낼게 (전송/생성),
 DELETE = 지워줘. GET은 브라우저 주소창으로 가능, POST는 도구(fetch, /docs) 필요.
 
+### git / GitHub (≠ GET)
+git은 GET/POST와 **남남** — 발음만 비슷. git = 코드의 타임머신(버전 관리 도구),
+commit = 세이브 포인트, push = GitHub(인터넷 저장소 서비스)에 업로드.
+GET/POST는 서버와의 대화법, git은 코드의 세이브 시스템.
+
 ### JSON
 서로 다른 프로그램끼리 데이터를 주고받는 표준 형식. 파이썬 딕셔너리와 생김새가 거의 같음.
 `{"이름": "캐슬타이거", "점수": 85}` — FastAPI는 함수가 return한 딕셔너리를 자동으로 JSON으로 변환.
@@ -63,7 +68,21 @@ JS 에러는 서버 터미널에 안 나온다. 브라우저 F12 → Console 탭
 | `def send():` | `function send() {` |
 | `box = 값` | `const box = 값` |
 | `==` | `===` |
+| `or` / `and` | `\|\|` / `&&` |
 | 들여쓰기 블록 | `{ }` 블록 |
+| `NameError` | `ReferenceError: X is not defined` |
+| `# 주석` | `// 주석` |
+| 딕셔너리 `{"k": v}` | 객체 `{ k: v }` (점표기 `obj.k`도 가능) |
+
+### async / await (비동기)
+서버 답장처럼 시간이 걸리는 일을 기다리는 문법. `await` = "답 올 때까지 이 줄에서 기다려".
+`await`를 쓰려면 함수 앞에 `async`가 필수: `async function send() { ... }`
+
+### JSON.stringify() / response.json() (포장과 개봉)
+전선을 타고 갈 수 있는 건 문자열뿐이라:
+- 보낼 때: `JSON.stringify(객체)` — JS 객체 → JSON 문자열로 **포장**
+- 받을 때: `await response.json()` — 답장 상자 → JS 객체로 **개봉**
+보내는 body의 필드명은 서버 BaseModel의 필드명과 정확히 일치해야 함 (틀리면 422).
 
 ### 404 vs 422 vs 500 (에러 번역)
 - **404 Not Found**: 그 주소에 등록된 함수가 없음 → 주소 오타, 라우트 확인
