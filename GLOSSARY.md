@@ -156,6 +156,13 @@ RAG가 관련 청크만 보내는 이유 = 토큰 절약.
 `best = 0`으로 시작하면 "모든 값이 0 이상"이라는 숨은 가정에 기댐.
 안전한 방법: **첫 번째 실제 데이터**로 시작 (`best = data[0]["점수"]`).
 
+### import / from / as (모듈 가져오기 3형제)
+- `import os` — 도구상자 통째로. 쓸 때 `os.getenv(...)` (상자이름 필수)
+- `from groq import Groq` — 상자에서 도구 하나만 꺼냄. 쓸 때 그냥 `Groq(...)`
+- `import pandas as pd` — 통째로 + 별명. 쓸 때 `pd.read_csv(...)`
+둘은 변환 가능: `import groq` 후 `groq.Groq(...)` = `from groq import Groq` 후 `Groq(...)`.
+도구 하나만 쓰면 from, 잡다하게 쓰면 통째로.
+
 ### shadowing (이름 가리기)
 `sum = 0`처럼 파이썬 내장 함수 이름을 변수로 쓰면 함수가 덮여서 못 쓰게 됨.
 `sum`, `list`, `max`, `min`, `len` 등은 변수명으로 쓰지 말 것.

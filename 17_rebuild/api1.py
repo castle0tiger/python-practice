@@ -1,13 +1,26 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.responses import FileResponse
+from groq import Groq
+from dotenv import load_dotenv
+import os
 
 class RegisterRequest(BaseModel):
     name: str           # 문자열, 필수
     score: int          # 정수, 필수
     absence: int = 0   # 정수, 선택(기본값 = 0)
 
+class AskRequest(BaseModel):
+    question: str # 문자열, 필수
+    
+
 app = FastAPI()
+
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "..", ".env"))
+api_key = os.getenv("GROQ_API_KEY") 
+
+client = Groq(api_key=api_key)
+
 
 @app.get("/")
 def get_home():
@@ -40,3 +53,17 @@ def post_register(register: RegisterRequest):
 @app.get("/page")
 def get_page():
     return FileResponse("17_rebuild/chat.html")
+
+
+@app.post("/ask")
+def post_ask(request: AskRequest):
+    response = client.chat.completions.create(
+        model="llama-3.3-70b-versatile",
+        messages=[
+            {"role": "system", "content": "한국어로 3 문장으로 답해"},
+            {"role": "user", "content": request.question}
+        ]
+    )
+    
+    groq_answer = response.choices[0].message.content
+    return {"질문": request.question, "답변": groq_answer}
