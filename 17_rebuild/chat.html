@@ -6,32 +6,30 @@
 <body>
     <h1>AI 챗봇</h1>
 
-    <input type="text" id="name_input" placeholder="이름">
-    <input type="text" id="score_input" placeholder="점수">
+    <input type="text" id="question_input" placeholder="무엇이든 물어보세요">
     <button onclick="send()">전송</button>
     
     <div id="msg_list"></div>
 
     <script>
         async function send() {
-            const nameBox = document.getElementById("name_input");
-            const scoreBox = document.getElementById("score_input");
+            const questionBox = document.getElementById("question_input");
             
-            if (nameBox.value === "" || scoreBox.value === "") {
+            if (questionBox.value === "") {
                 return;
             }
             
-            const response = await fetch("/register", {
+            const response = await fetch("/ask", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ name: nameBox.value, score: scoreBox.value, absence: 0 })
+                body: JSON.stringify({ question: questionBox.value })
             });
             
             const data = await response.json();
             const list = document.getElementById("msg_list");
-            list.innerHTML += "<p>" + nameBox.value + " : " + data["판정"] + "</p>";
-            nameBox.value = "";
-            scoreBox.value = "";
+            list.innerHTML += "<p>" + "나:" + questionBox.value + "</p>";
+            list.innerHTML += "<p>" + "AI: " + data["답변"] + "</p>";
+            questionBox.value = "";
         }    
     </script>
 </body>
