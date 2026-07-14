@@ -21,6 +21,8 @@ api_key = os.getenv("GROQ_API_KEY")
 
 client = Groq(api_key=api_key)
 
+groq_memory = []  #대화내용 기록 리스트
+
 
 @app.get("/")
 def get_home():
@@ -57,13 +59,13 @@ def get_page():
 
 @app.post("/ask")
 def post_ask(request: AskRequest):
+    groq_memory.append({"role": "user", "content": request.question})
+    script = [{"role": "system", "content": "한국어로 3 문장으로 답해"}] + groq_memory
     response = client.chat.completions.create(
         model="llama-3.3-70b-versatile",
-        messages=[
-            {"role": "system", "content": "한국어로 3 문장으로 답해"},
-            {"role": "user", "content": request.question}
-        ]
+        messages= script
     )
-    
+
     groq_answer = response.choices[0].message.content
-    return {"질문": request.question, "답변": groq_answer}
+    groq_memory.append({"role": "assistant", "content": groq_answer})
+    return {"질문": request.question, "답변": groq_answer, "누적대화수": len(groq_memory)}
