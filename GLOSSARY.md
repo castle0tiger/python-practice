@@ -164,6 +164,20 @@ RAG가 관련 청크만 보내는 이유 = 토큰 절약.
 클래스 이름이 대문자로 시작하는 이유 = "이건 틀이다"라는 표시 (Groq, FastAPI, BaseModel).
 객체지향 프로그래밍 = 프로그램을 객체들의 협업으로 짜는 사고방식.
 
+### __init__ / self (클래스 문법)
+```python
+class VendingMachine:
+    def __init__(self, price):   # 찍는 순간 자동 실행되는 조립 설명서
+        self.price = price       # 받은 재료를 "이 붕어빵의 칸"에 저장
+        self.sold_count = 0      # 기본값으로 시작하는 칸
+    def buy(self, money):        # 기능(메서드) — 첫 재료는 무조건 self
+        self.sold_count += 1     # "이 자판기의" 카운터
+```
+- self = "지금 이 붕어빵 자신". `drink.buy(1600)` 호출 시 self 자리에 drink가 자동으로 들어감
+- 객체마다 칸은 독립 (콜라의 sold_count와 사이다의 sold_count는 남남)
+- 전역 리스트를 클래스로 옮기면: `groq_memory = []` → `self.cards = []`, 문법은 이름만 바뀜
+- append엔 알맹이를, `+`엔 리스트를 / 괄호 없으면 기능 자체, 있으면 실행 결과
+
 ### `=` 는 "같다"가 아니라 "담아라" (대입)
 규칙 하나: **오른쪽을 먼저 실행하고, 결과물을 왼쪽 이름에 담는다.**
 `x = 1+2+3`(계산 결과 담기)과 `client = Groq(...)`(제작 결과 담기)은 같은 문법.
