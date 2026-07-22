@@ -143,7 +143,7 @@ RAG가 관련 청크만 보내는 이유 = 토큰 절약.
 **함정: 쉼표 뒤 공백도 데이터의 일부.** `name, score` → 열 이름이 `" score"`가 됨 → KeyError.
 
 ### 불린 필터링 (pandas)
-`df[df["score"] >= 80]` — 두 단계로 읽는다:
+`df[+]` — 두 단계로 읽는다:
 ①안쪽이 행마다 `[True, False, ...]` 목록을 **만들고** ②바깥 `df[...]`가 True인 행만 남김.
 
 ### 누적 vs 교체
@@ -215,6 +215,38 @@ class VendingMachine:
 - 객체마다 칸은 독립 (콜라의 sold_count와 사이다의 sold_count는 남남)
 - 전역 리스트를 클래스로 옮기면: `groq_memory = []` → `self.cards = []`, 문법은 이름만 바뀜
 - append엔 알맹이를, `+`엔 리스트를 / 괄호 없으면 기능 자체, 있으면 실행 결과
+
+### 데코레이터 (@) / 함수도 객체다
+
+**1) @의 정체: "아래 함수를 정의되는 즉시 저 녀석에게 배달해라."**
+```python
+def register(func):        # 함수를 받는 함수
+    toolbox.append(func)   # 받은 함수를 목록에 등록
+    return func            # 원래 함수를 그대로 돌려줌 (안 그러면 원본이 사라짐)
+
+@register                  # = "hello가 정의되는 순간, hello를 register에게 배달"
+def hello(): ...
+```
+- **배달(등록)은 "정의되는 순간" 일어난다. 호출(실행)과는 별개.** 파일을 위에서 아래로
+  읽다가 @를 만나면 그 자리에서 바로 실행됨. 그래서 hello()를 한 번도 안 불러도 등록은 끝나 있다.
+- 이래서 uvicorn이 api1.py를 **읽기만 해도** @app.post 엔드포인트가 전부 등록되고,
+  요청이 0건이어도 /docs가 전체 메뉴판을 안다.
+
+**2) 함수도 리스트에 담을 수 있는 객체다.**
+```python
+toolbox = []
+toolbox.append(hello)   # 괄호 없이 담으면 "함수 그 자체"가 들어감 (실행 결과가 아니라)
+for t in toolbox:
+    t()                 # 꺼낸 뒤 괄호를 붙여야 실행됨
+```
+agent01.py의 `tools = [calculator, search_company_rules]`가 바로 이것 —
+함수 자체를 리스트에 담은 것. `@tool`은 LangChain이 만든 register의 실전 버전.
+
+**3) return이 없으면 None이 돌아온다.**
+print만 하고 return이 없는 함수를 `x = func()`로 받으면 x는 None.
+"return이 없다" = "None을 return한다"와 같은 말.
+- **print(보여주기)와 return(값 돌려주기)은 완전히 다른 일.** print는 화면에 찍고 None을 돌려줌.
+  한 줄에 섞지 말 것 — 계산 함수는 return만, 출력은 받은 쪽에서 따로 print.
 
 ### `=` 는 "같다"가 아니라 "담아라" (대입)
 규칙 하나: **오른쪽을 먼저 실행하고, 결과물을 왼쪽 이름에 담는다.**
