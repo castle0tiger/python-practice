@@ -153,6 +153,38 @@ AI는 자기가 학습한 것만 안다 → 내 문서(회사 규정 등)는 모
 임베딩 벡터를 파일로 저장해두는 DB. 핵심: **임베딩 계산을 처음 한 번만** 하고,
 그 다음부터는 저장된 벡터에서 바로 검색. 문서 10만 개여도 매번 재계산 안 함.
 
+### LangChain — AI 앱 배관을 부품화한 라이브러리
+
+**한 줄:** 새로운 마법이 아니라, **직접 하던 걸 부품으로 포장한 것.**
+```python
+# 직접 방식
+client = Groq(api_key=...)
+response = client.chat.completions.create(model=..., messages=[{"role":"system",...}])
+answer = response.choices[0].message.content        # 상자 두 번 까기
+
+# LangChain 방식
+llm = ChatGroq(model=..., api_key=...)              # 똑같이 클래스로 객체 찍기
+answer = llm.invoke("질문").content                  # 한 번만 까기
+```
+
+**핵심 부품 3개:**
+- **`.invoke()`** — LangChain 부품의 **공용 실행 명령**. prompt든 llm이든 chain이든 전부 이걸로 실행
+- **ChatPromptTemplate** — 프롬프트의 붕어빵 틀. `{topic}` 같은 빈칸을 나중에 채움
+  ```python
+  prompt = ChatPromptTemplate.from_messages([
+      ("system", "너는 파이썬 강사야"),   # ← {"role":"system","content":...}와 같은 것
+      ("human", "{topic}이 뭐야?")        # ← {topic}은 나중에 채울 빈칸
+  ])
+  prompt.invoke({"topic": "리스트"})       # AI 호출이 아니라 "질문지 완성" 단계!
+  ```
+- **`|` (파이프)** — 왼쪽 결과를 오른쪽 입력으로 흘려보냄
+  ```python
+  chain = prompt | llm       # 아래 두 줄을 하나로 묶은 것
+  # message = prompt.invoke({...});  answer = llm.invoke(message)
+  ```
+  이어붙인 chain도 **하나의 부품**이라 사용법이 안 바뀜 → 여러 단계를 계속 엮을 수 있음
+  (`retriever | prompt | llm | parser` 처럼)
+
 ### Agent (에이전트)
 질문을 받으면 AI가 **스스로 판단해서 도구를 선택·실행**하는 구조.
 일반 AI: 질문 → 답변. Agent: 질문 → 도구 필요성 판단 → 도구 실행 → 결과로 답변.
