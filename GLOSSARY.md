@@ -346,6 +346,70 @@ print만 하고 return이 없는 함수를 `x = func()`로 받으면 x는 None.
 ③함수 안에서 `=`/`+=` 대입하면 그 이름은 지역 취급 → 전역 리스트에 추가는 반드시 `.append()`로
 (어기면 UnboundLocalError)
 
+### ★ 라이브러리 읽는 틀: Client → Resource → Action
+
+처음 보는 라이브러리를 만났을 때 **어디부터 봐야 하는지** 알려주는 패턴.
+개별 메서드 이름은 못 외워도, 이 뼈대만 알면 문서에서 길을 찾을 수 있다.
+
+**왜 3단계인가 — 은행 비유**
+```
+1. 은행에 들어간다   → 어디에 연결할지        (Client)
+2. 내 계좌를 연다     → 그 안의 뭘 다룰지      (Resource)
+3. 출금한다          → 그걸로 뭘 할지         (Action)
+```
+바로 "출금"부터 못 한다. **어디 → 무엇 → 무슨 동작** 순으로 좁혀 들어간다.
+
+**내 코드로 확인 — ChromaDB**
+```python
+client_db  = chromadb.PersistentClient(path=...)          # 1. 창고에 연결
+collection = client_db.get_or_create_collection("rules")  # 2. 그 창고의 서랍 하나
+collection.add(documents=chunks, ids=[...])               # 3. 넣기
+collection.query(query_texts=[질문], n_results=2)          # 3. 찾기
+```
+각 단계가 **객체를 하나씩 낳는다.** Client 객체 → (그 메서드가) Collection 객체 → (그 메서드가) 동작.
+
+**Groq**
+```python
+client = Groq(api_key=...)                     # 1. Groq 서버에 연결
+client.chat.completions                        # 2. "대화 답변 생성" 자원으로 좁힘
+              .create(model=..., messages=...) # 3. 실제로 만들어라
+```
+점 사슬이 길어 보이지만 가운데 `.chat.completions`가 딱 2단계.
+(Groq엔 음성 변환 등 다른 자원도 있어서, 그중 대화 쪽으로 들어가는 길)
+
+**FastAPI (방향만 반대)**
+```python
+app = FastAPI()          # 1. 서버 앱
+@app.get("/scores")      # 2. "/scores 주소"라는 대상
+def get_scores(): ...    # 3. 그 주소로 오면 할 동작
+```
+ChromaDB/Groq은 "내가 요청하는" 쪽, FastAPI는 "요청을 받는" 쪽이라 등록(@) 형태.
+뼈대(연결→대상→동작)는 같다.
+
+**처음 보는 라이브러리에 적용하는 법**
+```
+"뭐가 Client 역할이지?"  → 문서 맨 앞의 인증/연결 부분
+"내가 다룰 대상은?"       → Collection? Table? Bucket? Channel?
+"할 수 있는 동작은?"      → 그 대상 객체의 메서드 목록 (자동완성으로 확인)
+```
+
+### 객체 구조를 직접 뜯어보는 도구 (모를 때 쓰는 X-레이)
+
+터미널에서 `python` 입력 → 대화형으로:
+```python
+>>> import chromadb
+>>> client = chromadb.PersistentClient(path="test_db")
+>>> type(client)                                        # 이 객체의 정체(클래스)는?
+>>> [m for m in dir(client) if not m.startswith("_")]   # 이 객체가 가진 기능 목록
+>>> help(client.get_or_create_collection)               # 그 기능의 사용법과 인자
+```
+- `type(x)` — 무슨 클래스로 만들어진 객체인가
+- `dir(x)` — 가진 칸과 기능 전부 (`_`로 시작하는 건 내부용이라 걸러냄)
+- `help(x.메서드)` — 사용법 설명
+- **에디터 자동완성**(`client.` 치고 멈추기)도 같은 일을 한다 — 실무자가 하루 수백 번 하는 것
+
+**핵심: 개발자도 API를 다 외우지 않는다. "빨리 찾는 법"을 알 뿐.**
+
 ### import / from / as (모듈 가져오기 3형제)
 - `import os` — 도구상자 통째로. 쓸 때 `os.getenv(...)` (상자이름 필수)
 - `from groq import Groq` — 상자에서 도구 하나만 꺼냄. 쓸 때 그냥 `Groq(...)`
