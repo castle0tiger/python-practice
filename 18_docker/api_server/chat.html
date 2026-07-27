@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI 챗봇</title>
+</head>
+<body>
+    <h1>AI 챗봇</h1>
+
+    <input type="text" id="question_input" placeholder="무엇이든 물어보세요">
+    <button onclick="send()">전송</button>
+    
+    <div id="msg_list"></div>
+
+    <script>
+        async function send() {
+            const questionBox = document.getElementById("question_input");
+            
+            if (questionBox.value === "") {
+                return;
+            }
+            
+            const response = await fetch("/ask", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ question: questionBox.value })
+            });
+            
+            const data = await response.json();
+            const list = document.getElementById("msg_list");
+            list.innerHTML += "<p>" + "나:" + questionBox.value + "</p>";
+            list.innerHTML += "<p>" + "AI: " + data["답변"] + "</p>";
+            questionBox.value = "";
+        }    
+    </script>
+</body>
+</html>

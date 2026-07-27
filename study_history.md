@@ -912,3 +912,13 @@ Flask는 웹 페이지 하나용, FastAPI는 여러 곳과 연결하는 API 서�
 - RUN(만들 때 한 번=설치) vs CMD(켤 때마다=실행). -p=포트 연결(상자는 밀폐). --host 0.0.0.0=바깥 접속 허용.
 **Docker 커리큘럼:** Day1 기본기(완료) → Day2 진짜 서버 담기(api1.py + .env 키관리, 핵심 도착점) → Day3 compose(선택) → Day4 배포(실제 서비스 생기면).
 **다음 할 것:** Day 2 — api1.py를 컨테이너에 담기 (.env API 키 처리가 새 관문, .dockerignore).
+
+### Day 15 — Docker 2일차: 진짜 서버 컨테이너화 (18_docker/api_server/)
+**한 것:** api1.py를 컨테이너에 담기. 의존성 3종 파악(라이브러리/파일/외부값) 스스로 해냄. 경로 의존 제거(load_dotenv(경로)→load_dotenv(), FileResponse("17_rebuild/..")→"chat.html" — 상자엔 프로젝트 폴더구조 없음). requirements.txt+Dockerfile(CMD를 api1:app으로)+.dockerignore 작성. 키 없이 실행 → 서버 시작조차 실패(GroqError, 22번줄=전역이라 파일 읽자마자 실행) → --env-file .env로 키 주입 → /ask AI답변 200 성공.
+**핵심 개념:**
+- .dockerignore = 상자에 안 넣을 목록(.env, __pycache__, Dockerfile). .gitignore와 같은 원리
+- **키는 절대 이미지에 굽지 않는다.** 이미지=코드만 / 실행 순간 주입 → 이미지 공유해도 안전
+- -e KEY="값"(명령어에 노출) vs --env-file .env(파일로, 실무 표준)
+- 빌드 캐시(CACHED): 안 바뀐 단계 재사용 → 재빌드 빨라짐
+- 이미지=실행에 필요한 모든 것(OS+파이썬+라이브러리+코드)을 한 덩어리로 패키징(멈춘 상태) / 컨테이너=그 덩어리를 뜯어 실행 중(움직이는 상태). 이미지↔컨테이너 역할 혼동했다가 교정 완료.
+**다음 할 것:** Day 3 compose(개념, 선택) 또는 Docker 일단락. 그 후 도메인 정해 실제 서비스.
