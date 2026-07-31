@@ -3,3 +3,4 @@ __pycache__/
 *.pyc
 *.db
 chroma_db/
+Next_learning_plan.md
