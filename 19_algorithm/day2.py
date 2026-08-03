@@ -14,20 +14,14 @@ def count_vowels_v2(text):
     return result
 
 
-v1_t1 = count_vowels_v1("hello")
-v1_t2 = count_vowels_v1("programming")
-v1_t3 = count_vowels_v1("xyz")
-
-v2_t1 = count_vowels_v2("hello")
-v2_t2 = count_vowels_v2("programming")
-v2_t3 = count_vowels_v2("xyz")
-
-print(v1_t1)
-print(v1_t2)
-print(v1_t3)
+print("count_vowels_v1(text) 테스트")
+print(f"hello의 모음: {count_vowels_v1("hello")}")
+print(f"programming의 모음: {count_vowels_v1("programming")}")
+print(f"xyz의 모음: {count_vowels_v1("xyz")}")
 
 print("\n")
 
-print(v2_t1)
-print(v2_t2)
-print(v2_t3)
+print("count_vowels_v2(text) 테스트")
+print(f"hello의 모음: {count_vowels_v2("hello")}")
+print(f"programming의 모음: {count_vowels_v2("programming")}")
+print(f"xyz의 모음: {count_vowels_v2("xyz")}")
