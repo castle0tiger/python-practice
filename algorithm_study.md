@@ -53,3 +53,36 @@ def count_vowels(text):
 **리뷰:** 테스트 결과를 변수 6개에 담았다가 출력했는데, 테스트는 바로 print해도 됨. 출력에 라벨 붙이면 나중에 뭐가 뭔지 보임(재구축 때 반복 지적).
 
 **배운 것:** `in` 연산자 = "포함 관계" 도구. 세 맥락이 같은 뿌리 — `"a" in "aeiou"`(있냐), `for c in text`(순회), `x not in list`(없냐).
+
+---
+
+## Day 3 — 최댓값과 최솟값의 차이 (★★☆)
+
+**문제:** 숫자 리스트에서 (최댓값 - 최솟값)을 return. `max_min_diff([3,7,1,9,4]) → 8`
+
+**내 풀이 (비교·갱신 — 원리):**
+```python
+def max_min_diff(numbers):
+    max_result = numbers[0]   # 첫 값으로 초기화 (0으로 하면 음수리스트 버그 — 자판기 때 배운 함정 회피)
+    min_result = numbers[0]
+    for n in numbers:
+        if max_result < n:
+            max_result = n
+    for n in numbers:
+        if min_result > n:    # min은 부등호만 뒤집기 (대칭)
+            min_result = n
+    return max_result - min_result
+```
+
+**내장 함수 버전:**
+```python
+def max_min_diff_v2(numbers):
+    return max(numbers) - min(numbers)
+```
+
+**막혔던 것:** `def f(???)` 괄호에 "리스트 넣는 문법"이 따로 있는 줄 앎.
+→ 괄호 안은 **"받을 이름표(변수명)"**일 뿐. text든 numbers든 그냥 이름. 종류 무관.
+
+**리뷰:** for를 두 번 돌았는데(max용, min용) 한 반복문 안에서 max/min 둘 다 체크하면 한 번만 돌면 됨(큰 데이터면 2배 빠름). 단 지금 방식도 정답이고 읽기 쉬움.
+
+**배운 것:** 매개변수 = 받을 이름표(특별 문법 없음). 비교·갱신을 리스트에 적용. max()/min() 내장. 반복문 한 번에 여러 판단 넣기.
