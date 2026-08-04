@@ -120,3 +120,34 @@ def max_min_diff_v2(numbers):
 **배운 것:** 매개변수 = 받을 이름표(특별 문법 없음). 비교·갱신을 리스트에 적용. max()/min() 내장. 반복문 한 번에 여러 판단 넣기.
 
 **→ 알고리즘 연결:** **상태관리(track)** — 순회하며 "지금까지의 최고/최소"를 변수에 기억·갱신하는 동작. 코테 단골(최대 구간합, 최장 길이 등)의 뿌리. "한 번 순회로 여러 상태 동시 추적"(v3)은 효율 알고리즘의 기본 감각.
+
+---
+
+## Day 4 — 가장 많이 나온 글자 (★★★, 첫 딕셔너리 문제)
+
+**문제:** 문자열에서 최다 등장 글자를 return. `most_frequent("banana") → "a"`
+
+**내 풀이 (2단계: 딕셔너리 카운터 + 비교갱신):**
+```python
+def most_frequent(text):
+    counts = {}
+    for t in text:               # 1단계: 개수 세기
+        if t in counts:
+            counts[t] += 1       # 이미 있으면 +1
+        else:
+            counts[t] = 1        # 처음이면 1로 (새 키 생성)
+
+    frequent = text[0]           # 2단계: 최다 찾기 (비교갱신)
+    for key in counts:           # 딕셔너리 순회 → 키(글자)가 하나씩
+        if counts[frequent] < counts[key]:   # 개수끼리 비교 (counts[키]로 꺼냄)
+            frequent = key
+    return frequent, counts[frequent]   # 여러 값 동시 return (쉼표) → ('l', 2)
+```
+
+**막혔던 것 & 배운 것:**
+- **딕셔너리 카운터 패턴** = "있으면 +1, 없으면 1". 개수 세기의 표준. (재구축 conversations[user]=[] 로 새 키 만들던 것과 같음)
+- **키 vs 값 구분이 관문:** 글자(키)는 `for key in counts`로, 개수(값)는 `counts[key]`로 꺼낸다. 이걸 섞어서 처음엔 `frequent[key] < key`로 꼬였음.
+- **여러 값 동시 return:** `return A, B` (쉼표). 받을 땐 `글자, 개수 = 함수()`.
+- **v2(중복 저장 버전)와 비교:** frequent에 [글자,개수] 쌍으로 저장하니 `frequent[1]`, `[key,counts[key]]`로 매번 쌍을 풀고 담아 복잡 + 두 곳(counts와 frequent)이 어긋날 위험. → **원칙: 정보는 한 곳에만(Single Source of Truth). 개수 출처는 counts, frequent는 글자만 가리키고 필요할 때 꺼낸다.**
+
+**→ 알고리즘 연결:** **집계(aggregate) — 딕셔너리 카운터.** "무엇이 몇 번 나오는가"를 딕셔너리로 세는 것. **코테에서 가장 자주 쓰는 핵심 패턴 중 하나**(빈도수, 중복 찾기, 그룹핑, 애너그램 등 전부 이 뿌리). Day2 집계가 "개수 하나"였다면 Day4는 "항목별 개수" = 한 단계 위. + 딕셔너리 순회는 새 도구.
