@@ -178,3 +178,29 @@ def common_elements(list1, list2):
 
 **→ 알고리즘 연결:** **필터링 → 수집(collect).** Day2 필터링이 "개수를 셌다"면, 오늘은 "고른 것을 리스트로 모았다". 세기 vs 모으기 = 필터링의 두 출력.
 **이게 정확히 주식 filter.py 구조:** `for stock in stocks: if 조건: result.append(stock)`. 교집합(intersection)의 기본형이기도 함.
+
+---
+
+## Day 6 — 중복된 원소 찾기 (★★★, 첫 패턴 조합)
+
+**문제:** 리스트에서 2번 이상 나온 원소를 리스트로 return. `find_duplicates([1,2,2,3,3,3,4]) → [2,3]`
+
+**내 풀이 (Day4 + Day5 조합):**
+```python
+def find_duplicates(numbers):
+    counts = {}
+    for n in numbers:               # 1단계: 딕셔너리 카운터 (Day4)
+        if n in counts:
+            counts[n] += 1
+        else:
+            counts[n] = 1
+    result = []
+    for key in counts:              # 2단계: 조건 필터 + 수집 (Day5)
+        if counts[key] >= 2:        # 개수 2 이상인 키만
+            result.append(key)
+    return result
+```
+- **★★★인데 힌트 없이 두 패턴을 통으로 조립.** Day4에선 쪼개줬던 걸 오늘은 스스로 이어붙임 = 성장.
+- 부등호 감각: "2번 이상"이라 `>= 2`. "정확히 2번"이면 `== 2`. 조건이 문제 뜻을 정확히 반영해야(자판기 경계값 때 배운 것).
+
+**→ 알고리즘 연결:** **"count then filter" 패턴 (집계 → 필터).** Day4(집계) + Day5(수집)의 조합. 빈도 기반 문제(중복 찾기, 한 번만 나온 것, N번 이상)는 전부 이 골격 = 세고 → 거른다. 주식으로 치면 "종목별 집계 → 조건 만족 종목 추리기"와 같은 2단계 구조.
