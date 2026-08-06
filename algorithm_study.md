@@ -204,3 +204,34 @@ def find_duplicates(numbers):
 - 부등호 감각: "2번 이상"이라 `>= 2`. "정확히 2번"이면 `== 2`. 조건이 문제 뜻을 정확히 반영해야(자판기 경계값 때 배운 것).
 
 **→ 알고리즘 연결:** **"count then filter" 패턴 (집계 → 필터).** Day4(집계) + Day5(수집)의 조합. 빈도 기반 문제(중복 찾기, 한 번만 나온 것, N번 이상)는 전부 이 골격 = 세고 → 거른다. 주식으로 치면 "종목별 집계 → 조건 만족 종목 추리기"와 같은 2단계 구조.
+
+---
+
+## Day 7 — 한 번만 나온 첫 글자 (★★★, 순서 + 엣지케이스)
+
+**문제:** 딱 한 번 나온 글자 중 최초의 것을 return, 없으면 None. `first_unique("abcabd") → "c"`
+
+**내 풀이:**
+```python
+def first_unique(text):
+    counts = {}
+    for t in text:                  # 1단계: 카운터 (Day4)
+        if t in counts: counts[t] += 1
+        else: counts[t] = 1
+    result = []
+    for t in text:                  # 2단계: text를 순회! (counts 아님) — 순서 지키려고
+        if counts[t] == 1:
+            result.append(t)
+    if result:                      # 엣지: 빈 결과 처리
+        return result[0]
+    else:
+        return None
+```
+
+**오늘의 두 배움:**
+- **순회 대상 선택 = 알고리즘 사고.** "가장 먼저"를 요구하면 → "먼저"라는 정보가 어디 있나 → **원본 text에 있다** → text를 돈다. (counts를 돌면 순서 꼬일 수 있음. 요즘 dict가 입력순서 기억하긴 하지만, 순서에 "기대는 것"과 "확실히 지키는 것"은 다름 — text 순회가 의도 명확·안전)
+- **엣지 케이스 + `if result:` 문법.** 빈 리스트에 `result[0]` → IndexError. 로직("있으면 첫 개, 없으면 None")은 스스로 세웠고 문법만 몰랐음 = **목표 상태**(로직 서고 문법은 오픈북). `if result:` = "뭐라도 있으면"(빈 리스트는 거짓).
+
+**효율 팁(알아둘 것):** "첫 개만 필요"하면 찾자마자 `return t`, 못 찾으면 `return None`. result 리스트 불필요 + 즉시 멈춤(Day3 v3의 "한 번 순회" 정신). 단 현재 풀이(다 모으고 첫 개)도 정답.
+
+**→ 알고리즘 연결:** count then filter + **순회 대상 선택(순서)** + **엣지 케이스 처리(빈 결과)**. 뒤 둘은 "정답은 나오는데 예외에서 터지는" 코테 감점 포인트를 막는 디테일.
