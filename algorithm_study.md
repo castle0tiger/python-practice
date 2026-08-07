@@ -278,4 +278,30 @@ def second_largest_v3(numbers):
 - 시키지 않았는데 **Day5의 set을 다른 문제에 스스로 적용** = 지식 연결 신호.
 - set의 단점(순서 없음)이 뒤의 sorted로 무력화됨 → 도구 조합으로 단점 상쇄되는 좋은 예.
 
+---
+
+## Day 9 — 학생별 평균 점수 (★★★, 중첩 반복 · 1단계 마무리)
+
+**문제:** `[{"name":.., "scores":[..]}, ...]` → `{이름: 평균}` 딕셔너리 return.
+
+**내 풀이:**
+```python
+def average_scores(students):
+    result = {}
+    for student in students:                 # 바깥: 학생마다
+        total = 0                            # ★ 초기화 위치: 바깥 안·안쪽 밖 (학생마다 리셋)
+        for score in student["scores"]:      # 안쪽: 그 학생 점수마다
+            total += score
+        average = total / len(student["scores"])
+        result[student["name"]] = average    # 결과 딕셔너리에 {이름: 평균}
+    return result
+```
+
+**핵심:**
+- **중첩 반복(nested loop) 첫 등장.** 바깥(학생) 안에 안쪽(점수). `total=0`을 정확한 자리(학생마다 리셋)에 놓는 게 함정 — 맞힘.
+- **에러를 스스로 진단·해결 (1단계 졸업 신호!):** 처음 `result[student]=average`로 씀 → `TypeError: unhashable type: 'dict'`(딕셔너리는 딕셔너리 키로 못 씀) → 스스로 원인 찾아 `result[student["name"]]`로 고침. "통째(student) vs 그 안의 값(student['name'])" 구분 = Day4 키/값 감각 재적용.
+- (unhashable = 딕셔너리 키로 못 쓰는 타입. 딕셔너리·리스트는 키 불가, 문자열·숫자·튜플은 가능. 깊이는 이해의 선 아래.)
+
+**→ 알고리즘 연결:** **그룹별 집계(group aggregation).** 바깥(그룹) 돌며 안쪽(그룹 내부) 집계. "학생별 평균/카테고리별 합계/부서별 인원" 전부 이 구조. **주식 프로젝트의 "종목별로 여러 날 데이터 집계"가 정확히 이 모양**(리스트 안 딕셔너리 안 리스트).
+
 **→ 알고리즘 연결:** 방법 A = **상태관리 심화**(Day3 확장, 변수 2개 추적). 방법 B = **정렬(sorting) 첫 등장 → 2단계의 핵심 도구.** "줄 세우면 문제가 쉬워지는" 마법. 나중에 "정렬 기준 정하기"(점수순 등)까지 가면 주식 종목 정렬에 직결.
