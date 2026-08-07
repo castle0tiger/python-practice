@@ -235,3 +235,39 @@ def first_unique(text):
 **효율 팁(알아둘 것):** "첫 개만 필요"하면 찾자마자 `return t`, 못 찾으면 `return None`. result 리스트 불필요 + 즉시 멈춤(Day3 v3의 "한 번 순회" 정신). 단 현재 풀이(다 모으고 첫 개)도 정답.
 
 **→ 알고리즘 연결:** count then filter + **순회 대상 선택(순서)** + **엣지 케이스 처리(빈 결과)**. 뒤 둘은 "정답은 나오는데 예외에서 터지는" 코테 감점 포인트를 막는 디테일.
+
+---
+
+## Day 8 — 두 번째로 큰 수 (★★☆, 정렬 첫 등장 · 2단계 다리)
+
+**문제:** 리스트에서 두 번째로 큰 수 return (중복 없다고 가정). `second_largest([3,7,1,9,4]) → 7`
+
+**방법 A (원리 — 상태관리 심화, 애먹음):**
+```python
+def second_largest(numbers):
+    first = numbers[0]; second = numbers[1]
+    if first < second:                 # 초기 두 개를 큰 순서로 세팅
+        first, second = numbers[1], numbers[0]
+    for n in numbers:
+        if n > first:                  # 1등보다 크면: 1등을 2등으로 밀고(순서 중요!) 새 값이 1등
+            second = first
+            first = n
+        elif n < first and n > second: # 1등 아닌데 2등보단 크면: 2등 교체
+            second = n
+    return second
+```
+- 핵심: **변수 2개(1등·2등) 동시 추적.** `second = first` 먼저 → `first = n` 순서 지켜야 옛 1등 안 사라짐.
+- `elif n < first and n > second` = "중간 구간" 조건. 빠뜨리기 쉬운데 챙김.
+
+**방법 B (도구 — 정렬):**
+```python
+def second_largest_v2(numbers):
+    return sorted(numbers)[-2]   # 정렬 → 뒤에서 두 번째
+```
+- `sorted(numbers)` = 작은 순 정렬 `[1,3,4,7,9]`. `[-2]` = 음수 인덱스, 뒤에서 둘째(=둘째로 큰 값). `[-1]`=제일 큰 값.
+
+**비교:** A는 20줄·머리아픔·근데 원리 앎+한 번 순회(빠름) / B는 3줄·간단·sorted가 뭘 하는지 알아야.
+
+**엣지(알아둘 것):** 중복 있으면 갈림. `[9,9,5]` → A는 5("9 다음 큰 값"), B는 `sorted[-2]=9`("위치 기준"). "두 번째로 큰"의 정의(값 기준 vs 위치 기준)에 따라 다름. 지금 문제는 중복 없어 동일.
+
+**→ 알고리즘 연결:** 방법 A = **상태관리 심화**(Day3 확장, 변수 2개 추적). 방법 B = **정렬(sorting) 첫 등장 → 2단계의 핵심 도구.** "줄 세우면 문제가 쉬워지는" 마법. 나중에 "정렬 기준 정하기"(점수순 등)까지 가면 주식 종목 정렬에 직결.
