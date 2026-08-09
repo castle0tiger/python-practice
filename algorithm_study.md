@@ -363,7 +363,9 @@ def rank_names(students):
 - `lambda x: x["score"]` = "x 받으면 x['score'] 돌려주는 이름 없는 미니 함수"(기준 지정용). 깊이는 이해의 선 아래.
 - 오해 상황을 **직접 print 찍어 실제 결과 확인 후 해결** = Day9 에러 자가진단과 같은 태도.
 
-**실무 간결 버전(참고):** `[s["name"] for s in sorted(students, key=lambda x: x["score"], reverse=True)]` (리스트 컴프리헨션). 지금은 반복문 방식이 이해에 좋음.
+**v2 (리스트 컴프리헨션으로 재구현):** `return [s["name"] for s in sorted(students, key=lambda x: x["score"], reverse=True)]`
+- "빈 리스트 → for → append" 3줄을 한 줄로. **문법 상세는 GLOSSARY "리스트 컴프리헨션" 항목** 참조.
+- agent01.py 아닌 **14_fastapi/main.py:57**의 `len([m for m in ... if m["role"]=="user"])`가 실제 컴프리헨션 예시 (대화기록에서 user 카드만 골라 세기). 오늘 배운 걸로 그 줄이 읽힘.
 
 **→ 알고리즘 연결:** **정렬 기준 정하기(key=).** Day8 "숫자 그냥 정렬"에서 → "딕셔너리를 특정 필드 기준 정렬"로. 코테 "~순 정렬" 유형 대부분 이걸로 풀림. **주식 프로젝트 "종목을 점수/거래량 순 정렬"에 직결.**
 
