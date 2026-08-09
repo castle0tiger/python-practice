@@ -383,6 +383,24 @@ for c in text:          # 순회   — 여러 개에서 하나씩 꺼내기
 - 멤버십 검사: 리스트·문자열·딕셔너리 어디든 됨. `3 in [1,2,3]`, `"키" in 딕셔너리`(키에 있냐)
 - 모음 판단 같은 것에 유용: `if c in "aeiou"` = `if c=='a' or c=='e' or ...` (5줄 → 1줄)
 
+### 리스트 컴프리헨션 — "반복문으로 리스트 만들기"를 한 줄로
+"빈 리스트 → for → append" 패턴의 압축형.
+```python
+# 3줄 버전                          # 컴프리헨션
+result = []                         result = [s["name"] for s in students]
+for s in students:
+    result.append(s["name"])
+```
+**조립 순서:** `[ 담을것  for 변수 in 대상 ]`  (읽기는 오른쪽 for부터: "대상에서 꺼내 → 담을것을 담아")
+**조건(필터) 추가:** `[ 담을것  for 변수 in 대상  if 조건 ]`
+```python
+[x*2 for x in nums]                        # 전부 두 배
+[s["name"] for s in students if s["score"]>=80]   # 조건 맞는 것만 뽑기
+```
+- agent01.py의 `[m for m in ... if m["role"]=="user"]`가 바로 이것.
+- **언제 쓰나:** 단순 변형/필터는 컴프리헨션, if-elif 여러 갈래·중첩 복잡하면 그냥 for문 3줄.
+  한 줄로 만드는 게 목적 아님 — **읽기 쉬운 쪽**을 택한다.
+
 ### 중첩 반복 (nested loop) — 반복문 안의 반복문
 ```python
 for student in students:              # 바깥: 그룹마다
