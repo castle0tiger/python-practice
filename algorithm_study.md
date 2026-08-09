@@ -341,4 +341,30 @@ def grade_report(scores):
 
 **다음: 2단계 (정렬 심화 → 완전탐색 → 그리디).** 방식 전환 — 로직도 "30분은 스스로 버티기" 후 힌트(끙끙대는 시간=학습). 문법은 여전히 오픈북.
 
+---
+
+## Day 11 — 점수 높은 순 이름 정렬 (★★★, 2단계 첫 문제 · 정렬 심화)
+
+**문제:** 학생 딕셔너리 리스트 → 점수 높은 순 이름 리스트. `rank_names(students) → ["이영희","김철수","박민수"]`
+
+**내 풀이:**
+```python
+def rank_names(students):
+    result = []
+    sorted_students = sorted(students, key=lambda x: x["score"], reverse=True)  # 정렬(새 도구)
+    for s in sorted_students:        # 순회하며 수집 (Day5)
+        result.append(s["name"])
+    return result
+```
+
+**새 문법 — 정렬 기준 `key=`:**
+- `sorted(리스트, key=lambda x: x["score"], reverse=True)` = "각 항목의 score를 **기준으로** 내림차순 정렬"
+- **중요(오해했다 교정):** `key=`는 "뭘 보고 순서 정할지"만 지정. **결과는 원래 항목(딕셔너리 통째) 그대로, 순서만 재배열.** score 기준이라고 score만 남는 게 아님. → 그래서 정렬 후 `s["name"]`으로 이름 꺼낼 수 있음.
+- `lambda x: x["score"]` = "x 받으면 x['score'] 돌려주는 이름 없는 미니 함수"(기준 지정용). 깊이는 이해의 선 아래.
+- 오해 상황을 **직접 print 찍어 실제 결과 확인 후 해결** = Day9 에러 자가진단과 같은 태도.
+
+**실무 간결 버전(참고):** `[s["name"] for s in sorted(students, key=lambda x: x["score"], reverse=True)]` (리스트 컴프리헨션). 지금은 반복문 방식이 이해에 좋음.
+
+**→ 알고리즘 연결:** **정렬 기준 정하기(key=).** Day8 "숫자 그냥 정렬"에서 → "딕셔너리를 특정 필드 기준 정렬"로. 코테 "~순 정렬" 유형 대부분 이걸로 풀림. **주식 프로젝트 "종목을 점수/거래량 순 정렬"에 직결.**
+
 **→ 알고리즘 연결:** 방법 A = **상태관리 심화**(Day3 확장, 변수 2개 추적). 방법 B = **정렬(sorting) 첫 등장 → 2단계의 핵심 도구.** "줄 세우면 문제가 쉬워지는" 마법. 나중에 "정렬 기준 정하기"(점수순 등)까지 가면 주식 종목 정렬에 직결.
