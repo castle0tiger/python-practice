@@ -395,4 +395,21 @@ def closest_diff(numbers):
 
 **→ 알고리즘 연결:** **"정렬 후 인접 비교" 패턴.** 코테 단골(중복 찾기, 구간 겹침, 최소 간격 등). 정렬이 "가까운 건 인접"을 보장 → 완전탐색(모든 쌍)을 회피. 2단계의 대표 사고방식.
 
+**방법 B (완전탐색 맛보기 — 스스로 도전):** 정렬 없이 모든 쌍 비교.
+```python
+def closest_diff_v2(numbers):
+    closest = abs(numbers[0] - numbers[1])
+    for i in range(len(numbers)):
+        for j in range(len(numbers)):     # 중첩: 모든 쌍 (i,j) 만들기
+            if i == j:
+                continue                  # 같은 것끼리는 건너뛰기
+            if abs(numbers[i] - numbers[j]) < closest:  # abs=절댓값
+                closest = abs(numbers[i] - numbers[j])
+    return closest
+```
+- **A vs B:** A(정렬)=빠름(100개→99번) / B(완전탐색)=느림(100개→~10000번)이지만 정렬 없이도 확실히 답. **코테 접근법: 일단 완전탐색 되나 보고 → 느리면 영리한 방법(정렬 등).**
+- **새 문법:** `abs()`=절댓값(음수 차이 방지), `continue`=이번 반복 건너뛰고 다음으로.
+- **continue vs pass:** continue=이번 바퀴 중단하고 다음 반복으로(흐름 제어) / pass=진짜 아무것도 안 함(빈 블록 자리채우기, 에러 방지용). 완전히 다름.
+- 완전탐색(모든 경우 다 해보기)의 골격 = 중첩 반복. 다음 2단계 주제 미리 맛봄.
+
 **→ 알고리즘 연결:** 방법 A = **상태관리 심화**(Day3 확장, 변수 2개 추적). 방법 B = **정렬(sorting) 첫 등장 → 2단계의 핵심 도구.** "줄 세우면 문제가 쉬워지는" 마법. 나중에 "정렬 기준 정하기"(점수순 등)까지 가면 주식 종목 정렬에 직결.

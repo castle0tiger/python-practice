@@ -417,6 +417,21 @@ for student in students:              # 바깥: 그룹마다
 못 쓰는 것: **리스트·딕셔너리**(변하는 것) → `unhashable type` 에러.
 예: `result[student] = ...`에서 student가 딕셔너리면 에러 → `result[student["name"]]`(문자열)로.
 
+### continue / pass / abs
+- **`continue`** — "이번 반복 여기서 끝, 다음 반복으로 점프" (아래 코드 실행 안 함). 흐름 제어.
+  ```python
+  for i in range(5):
+      if i == 2: continue   # 2일 때 건너뜀 → 출력 0,1,3,4
+      print(i)
+  ```
+- **`pass`** — "진짜 아무것도 안 함" (빈 블록 자리채우기). `if:`/`def:` 안이 비면 에러라 그 자리 메움.
+  ```python
+  def 나중에():
+      pass   # 아직 내용 없음, 에러만 막기
+  ```
+  → continue(다음 반복으로 점프) vs pass(효과 없음)는 **완전히 다름**.
+- **`abs(x)`** — 절댓값. `abs(-5)` → 5. "차이"처럼 부호 없이 크기만 필요할 때.
+
 ### range() — 숫자(인덱스)를 만들어주는 도구
 `len(리스트)`는 숫자 하나라 `for`로 못 돎. "인덱스(0,1,2..)를 순회"하려면 range.
 ```python
