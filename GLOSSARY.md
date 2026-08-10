@@ -417,6 +417,17 @@ for student in students:              # 바깥: 그룹마다
 못 쓰는 것: **리스트·딕셔너리**(변하는 것) → `unhashable type` 에러.
 예: `result[student] = ...`에서 student가 딕셔너리면 에러 → `result[student["name"]]`(문자열)로.
 
+### range() — 숫자(인덱스)를 만들어주는 도구
+`len(리스트)`는 숫자 하나라 `for`로 못 돎. "인덱스(0,1,2..)를 순회"하려면 range.
+```python
+range(5)              # 0,1,2,3,4  (0부터 5 "직전"까지)
+for i in range(5):    # i가 0,1,2,3,4
+for i in range(len(리스트)):       # 전체 인덱스 순회 → 리스트[i]
+for i in range(len(리스트) - 1):   # 마지막 "직전"까지
+```
+- **`[i+1]`(다음 원소)을 볼 땐 `range(len()-1)` 필수.** 안 그러면 마지막에서 `리스트[len]` → IndexError.
+- `리스트[i]`처럼 인덱스가 필요할 때 range. 값만 필요하면 그냥 `for x in 리스트`(더 간단).
+
 ### for 문 — "여러 개짜리에서 하나씩 꺼내기"
 `for x in ______:` 에서 밑줄이 **여러 개짜리(순회 가능한 것)**면 뭐든 하나씩 꺼내준다.
 ```python
