@@ -525,4 +525,28 @@ def max_items(weights, target):
 
 **→ 알고리즘 연결:** **정렬+그리디 조합.** "가벼운 것부터 담아 개수 최대화"는 그리디 논증(정렬로 순서 보장 → 앞에서부터 담으면 최적). 누적(Day1)+순회(Day12)+조기중단(break). 코테 "최대 개수/최소 그룹" 유형의 기본.
 
+---
+
+## Day 16 — 빈도수 순 정렬 (★★★, 카운터+정렬 조합)
+
+**문제:** 많이 나온 순으로 원소 정렬(각 하나씩). `sort_by_frequency([1,2,2,3,3,3]) → [3,2,1]`
+
+**내 풀이:**
+```python
+def sort_by_frequency(inputs):
+    counts = {}
+    for i in inputs:                    # 1단계: 딕셔너리 카운터 (Day4)
+        if i in counts: counts[i] += 1
+        else: counts[i] = 1
+    return sorted(counts, key=lambda x: counts[x], reverse=True)   # 2단계: 개수 기준 정렬 (Day11)
+```
+
+**오늘의 핵심 (함정을 한 번에 맞힘):**
+- `sorted(counts, key=lambda x: counts[x], reverse=True)`
+- `sorted(counts)` → 딕셔너리는 **키(원소)**가 정렬 대상. `key=lambda x: counts[x]` → 각 원소 x를 **그 원소의 개수**로 정렬.
+- **정렬 대상(원소)과 정렬 기준(개수)이 다름** = Day11("학생을 점수로")보다 한 단계 추상적. "원소를, 그 원소의 개수로" 정렬.
+- (`sorted(counts.keys(), ...)`로 명시해도 같음. 그냥 `counts`만 써도 키가 나옴.)
+
+**→ 알고리즘 연결:** **Day4(카운터) + Day11(정렬 기준) = "세고 → 개수로 정렬".** "Top N 자주 나온 것" 유형의 핵심(인기순 정렬, 최빈 단어 등). **주식: "가장 자주 신호 뜬 종목 순 정렬"이 정확히 이 패턴** — `sorted(종목별횟수, key=lambda x: 종목별횟수[x], reverse=True)`.
+
 **→ 알고리즘 연결:** 방법 A = **상태관리 심화**(Day3 확장, 변수 2개 추적). 방법 B = **정렬(sorting) 첫 등장 → 2단계의 핵심 도구.** "줄 세우면 문제가 쉬워지는" 마법. 나중에 "정렬 기준 정하기"(점수순 등)까지 가면 주식 종목 정렬에 직결.
