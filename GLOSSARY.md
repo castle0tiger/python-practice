@@ -342,6 +342,20 @@ for x in 데이터:
 - **키 vs 값 구분:** `for k in counts`는 키(글자)를 꺼냄. 값(개수)은 `counts[k]`로 꺼냄. 섞지 말 것.
 - 이 패턴 위에 "최다 찾기"(비교갱신) 얹으면 빈도 문제 완성. 애너그램·중복찾기·그룹핑도 이 뿌리.
 
+### 딕셔너리 꺼내기: .keys() / .values() / .items()
+```python
+counts = {"a": 1, "b": 3, "c": 2}
+counts.keys()     # a, b, c          키들 (원소)
+counts.values()   # 1, 3, 2          값들 (개수)
+counts.items()    # ("a",1),("b",3)  키-값 쌍들
+for k, v in counts.items():   # 키·값 동시에 꺼내기 (자주 씀)
+```
+- 그냥 `for x in counts`는 **키**가 나옴 (= `.keys()`와 같음).
+- **"원소를 개수 순 정렬" vs "개수만 정렬" 구분 (중요):**
+  - `sorted(counts, key=lambda x: counts[x])` → **원소**를 개수 기준 정렬 (원소 유지) ✅
+  - `sorted(counts.values())` → **개수 자체**를 정렬 (누구 것인지 사라짐) — 다른 목적일 때만
+  - 즉 남기고 싶은 게 원소면 `key=`, 개수 값 자체가 궁금하면 `.values()`.
+
 ### if 리스트: — "비었나" 판단 (빈 값 검사)
 파이썬은 리스트·문자열·딕셔너리를 `if`에 바로 넣으면 "비었나 아닌가"로 판단.
 ```python
