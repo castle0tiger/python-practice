@@ -436,6 +436,7 @@ for student in students:              # 바깥: 그룹마다
   - **break vs return:** break=반복문만 빠져나감(함수는 계속) / return=함수 자체 종료(값 들고 나감).
   - break로 나가고 반복문 밖에서 return 한 번 = 깔끔(return 지점 하나). Day13 패턴과 같은 결.
 - **`continue`** — "이번 반복 여기서 끝, 다음 반복으로 점프" (아래 코드 실행 안 함). 흐름 제어.
+  - **break ↔ continue (형제):** break=반복 전체 끝(나감) / continue=이번 반복만 건너뜀(계속). 층위가 달라 "반대"보단 "흐름 제어 두 도구".
   ```python
   for i in range(5):
       if i == 2: continue   # 2일 때 건너뜀 → 출력 0,1,3,4
