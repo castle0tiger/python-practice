@@ -488,4 +488,41 @@ def min_coins(coins, target):
 
 **→ 알고리즘 연결:** **그리디(greedy) 시작.** "매 순간 최선"만 골라 빠르게. 완전탐색(다 해보기)의 반대 축. 단 성립 조건 필요. 새 문법 //(몫)·%(나머지).
 
+---
+
+## Day 15 — 최대한 많이 담기 (★★★, 정렬+그리디 조합)
+
+**문제:** 무게 리스트 + 용량 → 담을 수 있는 최대 개수. `max_items([2,5,1,8,3], 10) → 3`
+
+**내 풀이 (if/elif/else 3갈래 — 동작 정답):**
+```python
+def max_items(weights, target):
+    sorted_weights = sorted(weights)   # ★ 가벼운 것부터! (개수 최대가 목표)
+    total = 0; count = 0
+    for w in sorted_weights:
+        if w < target and total + w <= target:
+            total += w; count += 1
+        elif ...: return count   # 못 담으면 멈춤
+        else: return count
+```
+
+**핵심 판단 (맞힘):** "개수 최대"면 **가벼운 것부터**. Day14는 "큰 동전부터"였는데 이번엔 반대 — **목표에 따라 정렬 방향이 바뀜.** 스스로 잡음.
+
+**간결 버전 v2 (break):**
+```python
+def max_items(weights, target):
+    total = 0; count = 0
+    for w in sorted(weights):
+        if total + w <= target:   # 담아도 용량 안 넘으면 (이 조건 하나면 충분)
+            total += w; count += 1
+        else:
+            break                 # 넘으면 반복 중단
+    return count                  # 밖에서 한 번만 return
+```
+- 조건은 `total + w <= target` **하나면 됨** (`w<target` 불필요, `[100],10`도 이걸로 걸러짐). "이 분기 정말 다 필요한가?" 감각(Day14에 이어).
+- **새 문법 `break`:** 반복문 즉시 종료. Day13 "return을 반복문 밖에" 구조와 같음("끝까지 담거나 / break로 멈추거나 → 밖에서 한 번 return").
+- **break vs return:** break=반복문만 빠져나감(함수 계속) / return=함수 자체 종료(값 들고 나감).
+
+**→ 알고리즘 연결:** **정렬+그리디 조합.** "가벼운 것부터 담아 개수 최대화"는 그리디 논증(정렬로 순서 보장 → 앞에서부터 담으면 최적). 누적(Day1)+순회(Day12)+조기중단(break). 코테 "최대 개수/최소 그룹" 유형의 기본.
+
 **→ 알고리즘 연결:** 방법 A = **상태관리 심화**(Day3 확장, 변수 2개 추적). 방법 B = **정렬(sorting) 첫 등장 → 2단계의 핵심 도구.** "줄 세우면 문제가 쉬워지는" 마법. 나중에 "정렬 기준 정하기"(점수순 등)까지 가면 주식 종목 정렬에 직결.

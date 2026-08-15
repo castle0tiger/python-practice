@@ -425,7 +425,16 @@ for student in students:              # 바깥: 그룹마다
 - 짝으로 자주 씀: 몫(`//`)으로 개수, 나머지(`%`)로 남은 것. 거스름돈/그리디의 핵심.
 - `n % 2 == 0` → 짝수 판별에도 씀 (2로 나눈 나머지가 0).
 
-### continue / pass / abs
+### break / continue / pass / abs
+- **`break`** — "반복문을 즉시 끝내고 빠져나가기". 조기 종료.
+  ```python
+  for w in weights:
+      if total + w > cap: break   # 조건 되면 반복 자체를 중단
+      total += w
+  # break 후 여기로 (반복문 밖)
+  ```
+  - **break vs return:** break=반복문만 빠져나감(함수는 계속) / return=함수 자체 종료(값 들고 나감).
+  - break로 나가고 반복문 밖에서 return 한 번 = 깔끔(return 지점 하나). Day13 패턴과 같은 결.
 - **`continue`** — "이번 반복 여기서 끝, 다음 반복으로 점프" (아래 코드 실행 안 함). 흐름 제어.
   ```python
   for i in range(5):
