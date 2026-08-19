@@ -726,4 +726,35 @@ def is_palindrome(text):
 
 **→ 알고리즘 연결:** **"양끝에서 안으로 좁히기" = 투 포인터(two pointer)의 재귀 버전.** 회문·정렬배열 검색·구간 문제 단골. 나중에 반복문 버전(인덱스 둘을 양끝→가운데)으로 재등장. 오늘 재귀로 감 잡음.
 
+---
+
+## Day 23 — 리스트 최댓값 재귀 ( ●●●●○○○○○○ 4/10 | Lv.1 | 코테 실전: 입문 · 체감↑ ) · 재귀 비교갱신 · 두 방식
+
+**문제:** 리스트 최댓값을 재귀로(max()·for 없이). `max_recursive([3,7,1,9,4]) → 9`
+
+**내 풀이 (두 버전):**
+```python
+def max_recursive(numbers):          # v1: max(a,b) 도구
+    if len(numbers) == 1:
+        return numbers[0]
+    return max(numbers[0], max_recursive(numbers[1:]))
+
+def max_recursive_v2(numbers):       # v2: if로 직접 비교
+    if len(numbers) == 1:
+        return numbers[0]
+    rest_max = max_recursive_v2(numbers[1:])   # 재귀 결과를 변수에 (한 번만 호출)
+    if numbers[0] >= rest_max:
+        return numbers[0]
+    else:
+        return rest_max
+```
+
+**오늘의 큰 고비 넘음 — "재귀 결과는 값이다":**
+- 막힘: `numbers[0]`(숫자) vs `numbers[1:]`(리스트)를 비교하려니 안 됨.
+- 해소: `max_recursive(numbers[1:])`는 **리스트를 넣지만 값(나머지 최댓값)을 돌려줌.** → 비교는 **숫자 vs 숫자.** 나머지 리스트가 하나의 숫자로 "압축"돼 돌아옴. (재귀 이해의 큰 고비)
+- `max(a,b) ≡ if a>=b: a else: b` — 도구 vs 원리 두 버전으로 확인.
+- base case가 "빈 것" 아닌 "1개"인 이유: 빈 리스트의 최댓값은 존재하지 않음 → "1개 남으면 그게 답".
+
+**→ 알고리즘 연결:** **재귀로 비교갱신 = 1단계 상태관리(Day3)를 재귀로.** 같은 문제(최댓값)를 반복문으로도 재귀로도 풀 수 있음. 재귀 자연스러운 것(트리·중첩) vs 반복문 자연스러운 것(단순 순회)을 상황따라 선택. **재귀 4종 완성**(합/뒤집기/판정/비교) → DFS 준비 완료.
+
 **→ 알고리즘 연결:** 방법 A = **상태관리 심화**(Day3 확장, 변수 2개 추적). 방법 B = **정렬(sorting) 첫 등장 → 2단계의 핵심 도구.** "줄 세우면 문제가 쉬워지는" 마법. 나중에 "정렬 기준 정하기"(점수순 등)까지 가면 주식 종목 정렬에 직결.
