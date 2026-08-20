@@ -448,6 +448,31 @@ for s in students:
 - **언제 쓰나:** 단순 변형/필터는 컴프리헨션, if-elif 여러 갈래·중첩 복잡하면 그냥 for문 3줄.
   한 줄로 만드는 게 목적 아님 — **읽기 쉬운 쪽**을 택한다.
 
+### isinstance(x, 타입) — "x가 이 타입이야?"
+```python
+isinstance(5, list)      # False  (숫자)
+isinstance([1,2], list)  # True   (리스트)
+isinstance("a", str)     # True   (문자열)
+```
+- "is instance of"의 줄임. 중첩 구조에서 "숫자냐 리스트냐" 구분해 처리할 때(DFS) 핵심.
+- `== True` 안 붙여도 됨: `if isinstance(x, list):` 로 바로.
+
+### DFS (깊이 우선 탐색) — 재귀로 중첩 구조 훑기
+"한 갈래를 끝까지 파고들었다가 되돌아 나오기". 재귀의 "들어갔다 나오기"를 중첩/트리에 적용.
+```python
+def nested_sum(items):
+    total = 0
+    for x in items:
+        if isinstance(x, list):
+            total += nested_sum(x)   # 리스트면 파고들고, 결과를 받아 챙김
+        else:
+            total += x               # 숫자면 처리
+    return total
+```
+- **생명은 `+=`(결과 받기):** 파고든 재귀가 return한 값을 안 받으면(그냥 `nested_sum(x)`) 증발 → "겉만 훑음". 되돌아 나올 때 값을 챙겨야 전체가 합쳐짐.
+- **각 호출의 `total`은 별개**(지역변수, 공유 아님). 재귀는 "변수 공유"가 아니라 "값 전달".
+- 트리 탐색·폴더 순회·미로 찾기의 뿌리.
+
 ### 재귀 (recursion) — 함수가 자기 자신을 부름
 큰 문제를 **같은 모양의 작은 문제**로 쪼개다가, 끝에서 멈춤 (러시아 인형).
 ```python
