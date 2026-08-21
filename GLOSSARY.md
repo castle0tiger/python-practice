@@ -345,6 +345,16 @@ list(set(...))          # 다시 리스트로
 - **주의: 순서 보장 안 됨** (`{3,4}`가 `[4,3]`로 나올 수 있음). 순서 중요하면 반복문 방식.
 - 코테 단골 자료형. 딕셔너리처럼 이름 기억해둘 것.
 
+### append vs extend + "바꾸는 메서드는 None 반환" (함정)
+```python
+result.append([3,4])   # [..., [3,4]]   통째로 하나의 원소로 (중첩)
+result.extend([3,4])   # [..., 3, 4]    낱개로 풀어 이어붙임 (평탄화엔 이것)
+```
+- **함정: `.append()`/`.extend()`/`.sort()`는 리스트를 "직접 바꾸고" return은 None.**
+  → `return result.append(i)` = `return None`! (None 출력 버그)
+  → append로 result를 **직접 채우고**, 마지막에 `return result` 로 **분리**해야 함.
+- 대조: `sorted()`/`len()`은 원본 안 바꾸고 결과를 return (그래서 `x = sorted(...)` 가능).
+
 ### 딕셔너리 카운터 — "무엇이 몇 번" 세기 (핵심 패턴)
 개수를 셀 때의 표준. 코테·실무에서 엄청 자주 나옴.
 ```python
