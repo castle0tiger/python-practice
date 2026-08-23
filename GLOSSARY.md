@@ -402,6 +402,7 @@ else:
 - `if len(result) > 0:` 이라고 길게 써도 되지만 `if result:` 가 파이썬다운 방식
 - 빈 리스트에 `result[0]` 하면 IndexError → 꺼내기 전에 이걸로 확인
 - 빈 것으로 치는 값: `[]`, `""`, `{}`, `0`, `None` (전부 거짓)
+- **`== True` / `== False` 는 생략이 관례:** T/F를 돌려주는 값은 `if 값 == True:` → `if 값:`, `if 값 == False:` → `if not 값:`. (이미 참/거짓이라 또 비교할 필요 없음). `isinstance(x,list) == True` → `isinstance(x,list)`.
 
 ### 순회 대상 선택 (순서가 중요할 때)
 "가장 먼저/순서대로"를 요구하는 문제는 **순서가 살아있는 것**을 순회해야 한다.
