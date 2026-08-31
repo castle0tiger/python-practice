@@ -18,7 +18,7 @@ print(f"[1, 2], [3, 4] -> {common_elements([1, 2], [3, 4])}")
 # common_elements([3, 3, 4], [3, 4]) → [3, 3, 4]
 # "공통 원소를 중복 없이" 원한다면 처리할 경우
 
-# 방법 A _ 조건 추가
+# 방법 A: and로 조건 추가 → 중복 제거 (원리)
 def common_elements_v2(list1, list2):
     result = []
 
@@ -32,7 +32,7 @@ print("\n")
 print(f"[3, 3, 4], [3, 4] -> {common_elements_v2([3, 3, 4], [3, 4])}")
 
 
-#방법 B _ set(집합) 쓰기
+# 방법 B: set 교집합 → 중복 제거 (도구)
 def common_elements_v3(list1, list2):
     return list(set(list1) & set(list2))
 

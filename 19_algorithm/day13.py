@@ -12,6 +12,7 @@ print(f"([1, 2, 3, 4], 8) -> {has_pair_sum([1, 2, 3, 4], 8)}")
 print(f"([5, 5], 10) -> {has_pair_sum([5, 5], 10)}")
 print("")
 
+
 ## 피드백 _ 효율성 제고
 def has_pair_sum_v2(numbers, target):
     for i in range(len(numbers)):

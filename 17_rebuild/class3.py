@@ -29,4 +29,3 @@ study.add("통계", 2)
 
 print(study.total_hours())
 print(study.best_subject())
-

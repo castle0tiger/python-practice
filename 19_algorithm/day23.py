@@ -9,10 +9,12 @@ print(max_recursive([5, 2]))
 print(max_recursive([42]))
 
 
-## if문으로 비교 
+
+## if문으로 비교
 def max_recursive_v2(numbers):
     if len(numbers) == 1:
         return numbers[0]
+    
     rest_max = max_recursive_v2(numbers[1:])
 
     if numbers[0] >= rest_max:

@@ -12,7 +12,7 @@ def max_min_diff(numbers):
 
     return max_result - min_result
 
-
+## 내장함수 max(), min()을 사용하면 더 간단하게 할 수 있다.
 def max_min_diff_v2(numbers):
     return max(numbers) - min(numbers)
 

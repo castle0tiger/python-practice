@@ -5,7 +5,7 @@ def count_vowels_v1(text):
             result += 1
     return result
 
-
+# if t in 'aeiou'로 간단하게 표현할 수 있다.
 def count_vowels_v2(text):
     result = 0
     for t in text:
@@ -15,13 +15,13 @@ def count_vowels_v2(text):
 
 
 print("count_vowels_v1(text) 테스트")
-print(f"hello의 모음: {count_vowels_v1("hello")}")
-print(f"programming의 모음: {count_vowels_v1("programming")}")
-print(f"xyz의 모음: {count_vowels_v1("xyz")}")
+print(f"hello의 모음: {count_vowels_v1('hello')}")
+print(f"programming의 모음: {count_vowels_v1('programming')}")
+print(f"xyz의 모음: {count_vowels_v1('xyz')}")
 
 print("\n")
 
 print("count_vowels_v2(text) 테스트")
-print(f"hello의 모음: {count_vowels_v2("hello")}")
-print(f"programming의 모음: {count_vowels_v2("programming")}")
-print(f"xyz의 모음: {count_vowels_v2("xyz")}")
+print(f"hello의 모음: {count_vowels_v2('hello')}")
+print(f"programming의 모음: {count_vowels_v2('programming')}")
+print(f"xyz의 모음: {count_vowels_v2('xyz')}")

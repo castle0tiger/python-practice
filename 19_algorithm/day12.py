@@ -15,7 +15,7 @@ print(f"[10, 40, 20] -> {closest_diff([10, 40, 20])}")
 print(f"[1, 100] -> {closest_diff([1, 100])}")
 print("\n")
 
-## 방법 B : 모든 순서쌍을 비교하여 찾기 _ 중복 반복
+## 방법 B : 모든 순서쌍을 비교하여 찾기(완전탐색) _ 중복 반복
 
 def closest_diff_v2(numbers):
     closest = abs(numbers[0] - numbers[1]) #초기값 = 첫 쌍의 차이

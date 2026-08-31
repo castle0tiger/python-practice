@@ -9,6 +9,7 @@ def nested_sum(input):
 
     return total
 
+
 print(nested_sum([1, 2, 3]))
 print(nested_sum([1, [2, 3], 4]))
 print(nested_sum([1, [2, [3, 4]], 5]))

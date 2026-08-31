@@ -22,7 +22,6 @@ print(f"banana 최다: {most_frequent('banana')}")
 
 
 ## 키와 값을 변수 frequent에 저장한 경우 (중복 저장이어서 실무에선 지양하는 방법)
-
 def most_frequent_v2(text):
 
     counts = {}

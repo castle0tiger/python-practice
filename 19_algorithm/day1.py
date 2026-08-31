@@ -3,7 +3,7 @@
 def reverse_text(text):
     result = ''
     for c in text:
-        result = c + result
+        result = c + result # 순서를 지정해서 더하기 할 수 있다. 
 
     return result
 
@@ -15,7 +15,6 @@ print(t2)
 
 #1 - 피드백
 #실무에서는 [::-1]으로 간략하게 사용할 수 있다. 
-
 
 def reverse_text_2(text):
     return text[::-1]

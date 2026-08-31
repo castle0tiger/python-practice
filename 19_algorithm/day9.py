@@ -19,6 +19,3 @@ students = [
 ]
 
 print(average_scores(students))
-
-
-
