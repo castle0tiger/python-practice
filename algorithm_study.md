@@ -917,4 +917,40 @@ def count_evens(input):
 
 **→ 알고리즘 연결:** 재귀/DFS 미니 점검 합격. 다음(Day29) DFS 한 번 더 다진 뒤 → 트리/백트래킹으로.
 
+---
+
+## Day 29 — 중첩 리스트 최댓값 ( ●●●●●○○○○○ 5/10 | Lv.2 | 코테 실전: 걸침 · DFS ) · 두 방법 비교
+
+**문제:** 중첩 리스트의 최댓값(깊이 무관). `nested_max([1,[2,[9,4]],5]) → 9`
+
+**방법 1 (레이어별 max — 완성):**
+```python
+def nested_max(input):
+    result = []
+    for i in input:
+        if isinstance(i, list):
+            result.append(nested_max(i))   # 재귀결과=숫자(그 층 최댓값) → append
+        else:
+            result.append(i)
+    return max(result)                     # 각 층이 자기 max를 위로 올림
+```
+
+**방법 2 (평탄화 후 max):**
+```python
+def flatten(input):                        # Day25 평탄화 그대로 (extend, 리스트 반환)
+    result = []
+    for i in input:
+        if isinstance(i, list): result.extend(flatten(i))
+        else: result.append(i)
+    return result
+def nested_max_v2(input):
+    return max(flatten(input))             # 재귀는 평탄화만, max는 밖에서 한 번
+```
+
+**사건 1 — extend/append 구분 (스스로 잡음):** 처음 `result.extend(nested_max(i))` → `'int' object is not iterable`. 원인: 방법1의 재귀는 **숫자** 반환인데 extend는 "여러 개"를 풀어넣는 것 → 숫자는 못 풂. **재귀가 뭘 반환하냐로 갈림:** 리스트 반환(평탄화 Day25)→extend / 숫자 반환(최댓값)→append. 두 방법이 머릿속에서 섞였다가 구분해냄 = 핵심 수확.
+
+**사건 2 — 방법2 "포기" 재검토:** "평탄화하면 리스트 반환이라 함수가 최댓값 못 낸다"고 판단→절반만 맞음. **평탄화 함수는 그대로 두고 밖에서 `max()` 한 번**이면 완성. **역할 분리 감각:** 재귀는 재귀 일(평탄화)만, 마무리(max)는 밖에서. "한 함수가 다 하려 말 것."
+
+**→ 알고리즘 연결:** 같은 문제 두 무기 — 방법1(층마다 max 추적, Day26 깊이 골격) vs 방법2(평탄화 재활용, Day25+max). "재귀 반환 타입(숫자/리스트)에 따라 처리 도구가 갈린다"를 체득.
+
 **→ 알고리즘 연결:** 방법 A = **상태관리 심화**(Day3 확장, 변수 2개 추적). 방법 B = **정렬(sorting) 첫 등장 → 2단계의 핵심 도구.** "줄 세우면 문제가 쉬워지는" 마법. 나중에 "정렬 기준 정하기"(점수순 등)까지 가면 주식 종목 정렬에 직결.
