@@ -516,6 +516,36 @@ def nested_sum(items):
 - **각 호출의 `total`은 별개**(지역변수, 공유 아님). 재귀는 "변수 공유"가 아니라 "값 전달".
 - 트리 탐색·폴더 순회·미로 찾기의 뿌리.
 
+### 트리(tree) — 딕셔너리로 표현하는 계층 구조 (Day31)
+파이썬에서 트리는 보통 이런 모양의 딕셔너리로 표현:
+```python
+tree = {
+    "value": 1,
+    "children": [
+        {"value": 2, "children": []},
+        {"value": 3, "children": [
+            {"value": 4, "children": []},
+            {"value": 5, "children": []}
+        ]}
+    ]
+}
+```
+- **중첩 리스트 DFS와 다른 점:** 리스트는 "리스트냐 아니냐"(`isinstance`)로 가지/잎을 구분해야 했지만, 트리는 **모든 노드가 항상 같은 모양**(`value`+`children`)이라 타입 검사가 필요 없음.
+- **대신 "이 필드에 몇 개 들어있나"로 `for` 필요 여부를 정함:**
+  - `tree["value"]` → 항상 1개 → `for` 없이 바로 접근
+  - `tree["children"]` → 0개~여러 개(리스트) → `for`로 하나씩 꺼내 재귀
+- 합계 예시 (DFS의 "값 전달" 원칙 그대로 적용):
+```python
+def tree_sum(tree):
+    total = 0
+    total += tree["value"]              # 단수 필드: for 없이 바로
+    for node in tree["children"]:       # 복수 필드: for로 순회
+        total += tree_sum(node)          # node(노드 하나)를 그대로 재귀에 넘김 + 결과는 += 로 받기
+    return total
+```
+- **자주 하는 실수:** `tree_sum(node["children"])`처럼 노드가 아니라 그 노드의 자식 리스트를 넘기는 것 — `tree_sum`이 기대하는 인자는 항상 "노드 하나"라는 원칙을 기준으로 확인하면 잡힘.
+- 중첩 리스트는 사실 구조상 이미 트리(가지·잎이 있는 파고들기 구조)와 같지만, 노드 정체성(`value`/`children` 구분)이 암묵적(타입으로만 구분)이라는 차이가 있음 — 딕셔너리 트리는 그걸 명시적으로 선언한 버전.
+
 ### 재귀 (recursion) — 함수가 자기 자신을 부름
 큰 문제를 **같은 모양의 작은 문제**로 쪼개다가, 끝에서 멈춤 (러시아 인형).
 ```python
