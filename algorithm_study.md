@@ -1048,3 +1048,37 @@ def tree_sum(tree):
 - 중첩 리스트 DFS와 달리 `isinstance` 분기가 사라진 대신, "이 필드는 단수냐 복수냐"를 구조로 미리 알고 접근하는 방식으로 바뀜.
 
 **→ 알고리즘 연결:** 3단계-2 A(트리) 첫 문제. Day19~30 DFS 패턴(파고들기+결과 챙기기)을 그대로 재사용하되, `isinstance` 타입 분기 대신 "필드가 단수/복수"라는 구조 정보로 재귀 여부를 판단하는 법을 새로 익힘.
+
+---
+
+## Day 32 — 트리 최댓값 (tree_max) — 두 방식 비교 ( ●●●●●○○○○○ 5/10 | Lv.2 | 코테 실전: 걸침 )
+
+**문제:** 트리 전체에서 최댓값 찾기. `tree_max({1,[7,{3,[9,2]}]}) → 9`
+
+**방법 1 (센티널 시도):**
+```python
+def tree_max(tree):
+    biggest = None
+    if biggest is None or tree["value"] > biggest:   # ← biggest가 방금 None이라 항상 참
+        biggest = tree["value"]
+    for node in tree["children"]:
+        sub_biggest = tree_max(node)
+        if sub_biggest > biggest:
+            biggest = sub_biggest
+    return biggest
+```
+**방법 2 (리스트에 모아서 max):**
+```python
+def tree_max_v2(tree):
+    result = []
+    result.append(tree["value"])
+    for node in tree["children"]:
+        result.append(tree_max_v2(node))
+    return max(result)
+```
+둘 다 정답(9). 같은 문제를 Day26·29 때 쓴 "①비교 갱신 vs ②모아서 max()" 두 방식으로 스스로 다시 실험함.
+
+**리뷰 포인트 — 센티널 오남용 발견:**
+방법 1의 `biggest = None` 직후 `if biggest is None or ...`는 **그 시점에 `biggest`가 무조건 `None`**이라 조건이 항상 참 → 사실상 `biggest = tree["value"]`와 동일. **센티널은 "안전한 시작값이 진짜 없을 때만"(Day30처럼 여러 출처가 실시간으로 섞일 때) 쓰는 도구**인데, 트리는 모든 노드가 `value`를 무조건 갖고 있어서 **처음부터 안전한 실제 값(①해법)**이 있음 → 센티널이 불필요했던 자리에 가져다 쓴 것. Day30(센티널 필요) vs Day32(불필요)를 대비하며 "언제 진짜 필요한지" 구분 기준이 명확해짐.
+
+**→ 알고리즘 연결:** A(트리) 두 번째 문제. 합산(Day31, `+=`)에서 최댓값 비교(Day32)로 "합치는 방식"을 바꿔 재귀에 적용. 초기값 3해법(GLOSSARY)을 실전 사례로 검증.
