@@ -3,7 +3,7 @@ def tree_depth(tree):
     
     if tree["children"]:
         for node in tree["children"]:
-            layers.append(tree_depth(node) + 1) 
+            layers.append(tree_depth(node) + 1)
     else:
         layers.append(1) # 자식이 없으면 1층
 
@@ -41,3 +41,6 @@ print(tree_depth({
         ]}
     ]
 }))
+
+
+## 복습 필요 문제
