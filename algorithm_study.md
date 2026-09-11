@@ -17,7 +17,9 @@
         ↓
 [완료] 3단계-1: 재귀·DFS (Day19~30) — 재귀5종+DFS5종+미니점검+마무리, 중첩구조 자유자재
         ↓
-[현재] 3단계-2: A.트리(딕셔너리 DFS) → C.DP맛보기(피보나치+메모) → B.백트래킹(조합·순열)  ← 다음
+[완료] 3단계-2 A: 트리(딕셔너리 DFS, Day31~35) — 합·최댓값·깊이·개수·존재확인
+        ↓
+[현재] 3단계-2 C→B: DP맛보기(피보나치+메모) → 백트래킹(조합·순열)  ← 다음
 ```
 
 **"알고리즘"의 두 뜻:** 넓은 뜻(문제 푸는 절차, 지금 하는 것) vs 좁은 뜻(정렬·DFS 등 기법, 코테의 그것).
@@ -1167,3 +1169,30 @@ def tree_count(tree):
 **추가 발견 — 재귀 호출 대상 오타:** 방법2 내부에서 `tree_count_v2(node)`가 아니라 `tree_count(node)`(방법1)를 부르고 있었음 — 결과는 우연히 맞았지만(방법1이 정확해서) 방법2 자신을 검증한 게 아니었음. `tree_count_v2(node)`로 고쳐서 결과 동일함을 직접 재확인.
 
 **→ 알고리즘 연결:** A(트리) 네 번째 문제, 누적(count) 계열 마무리. Day31~34로 트리 DFS 핵심 4종(합·최댓값·깊이·개수) 완료.
+
+---
+
+## Day 35 — 트리에서 특정 값 찾기 (tree_search) — A(트리) 다지기 마무리 ( ●●●●●○○○○○ 5/10 | Lv.2 | 코테 실전: 걸침 )
+
+**문제:** 트리 안에 target 값이 있는지 True/False. `tree_search({1,[7,{3,[9,2]}]}, 9) → True`
+
+**코드 (한 번에 완성):**
+```python
+def tree_search(tree, target):
+    if tree["value"] == target:
+        return True
+    else:
+        if tree["children"]:
+            for node in tree["children"]:
+               if tree_search(node, target) == True:
+                   return True
+    return False
+```
+Day27(중첩 리스트에서 찾기, 조기 return True + 끝까지 못 찾으면 False)의 패턴을 자식이 여러 명인 트리로 정확히 확장함. 테스트 3개(존재/깊은 곳에 존재/미존재) 모두 정답.
+
+**리뷰:**
+- `if tree_search(node, target) == True:` → 이미 불리언(True/False)을 리턴하니 `== True` 불필요, `if tree_search(node, target):`로 충분 (isinstance 때와 같은 규칙, GLOSSARY에 이미 기록됨).
+- 참고용 한 줄 버전: `return tree["value"] == target or any(tree_search(node, target) for node in tree["children"])` — `any()`가 "하나라도 True면 True"를 뜻함.
+- **누적/고르기와 다른 세 번째 결합 방식임을 확인:** 이번엔 "다 더하기"도 "제일 큰 것 고르기"도 아니라 "하나라도 맞으면 즉시 끝(조기 반환)". GLOSSARY "재귀 결과 합치는 갈래" 항목에 ③존재확인(OR)로 추가.
+
+**→ 알고리즘 연결:** A(트리) 다섯 번째이자 이번 다지기의 마무리 문제. 합·최댓값·깊이·개수·존재확인까지, 트리 DFS에서 "재귀 결과를 합치는 3가지 방식(누적/고르기/OR)"을 모두 실제로 구현해봄. 다음은 로드맵상 C(DP 맛보기: 피보나치→메모이제이션).
