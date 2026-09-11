@@ -495,6 +495,30 @@ for s in students:
 - **언제 쓰나:** 단순 변형/필터는 컴프리헨션, if-elif 여러 갈래·중첩 복잡하면 그냥 for문 3줄.
   한 줄로 만드는 게 목적 아님 — **읽기 쉬운 쪽**을 택한다.
 
+### 제너레이터 표현식 — 컴프리헨션의 "리스트 안 만드는" 버전
+```python
+[ tree_search(node, target) for node in tree["children"] ]   # 리스트 컴프리헨션: [ ] → 결과를 리스트로 다 만듦
+  tree_search(node, target) for node in tree["children"]     # 제너레이터 표현식: ( )나 괄호 없이 → 하나씩만 필요할 때 즉석에서 계산
+```
+`any(...)`나 `sum(...)`처럼 **괄호 안에 이미 있을 땐 바깥 `()`를 또 안 써도 됨** — `any(tree_search(node, target) for node in tree["children"])`가 바로 이 모양. 조립 순서·문법은 리스트 컴프리헨션과 완전히 같음, 차이는 "다 모아서 리스트로 만드냐(`[]`) vs 필요할 때마다 하나씩 계산하냐(`()`/생략)"뿐.
+
+### any() / all() — 여러 개 중 "하나라도"/"전부 다"
+```python
+any([False, False, True])   # True   — 하나라도 참이면 True
+any([False, False, False])  # False  — 참이 하나도 없으면 False
+any([])                     # False  — 빈 것을 넣으면 무조건 False
+
+all([True, True, True])     # True   — 전부 다 참이어야 True
+all([True, False, True])    # False  — 하나라도 거짓이면 False
+all([])                     # True   — 빈 것을 넣으면 무조건 True (역설적이지만 "거짓인 게 하나도 없다"는 뜻이라 True)
+```
+- **재귀와 결합하면 강력함(Day35 tree_search):**
+```python
+return tree["value"] == target or any(tree_search(node, target) for node in tree["children"])
+```
+  "내 값이 target이거나, 자식들 중 하나라도(any) target을 찾았으면" → 한 줄로 "존재확인(OR)" 재귀를 표현. 단락 평가(`or`)라서 왼쪽이 True면 `any()`는 아예 실행도 안 됨 — `for`+`if`+`return True`로 조기 반환하던 것과 동작이 똑같음.
+- **all()의 실전 용도:** "모든 조건을 다 만족하는지" 검사할 때(예: "모든 학생이 60점 이상인가?" → `all(s["점수"]>=60 for s in students)`). 지금은 안 썼지만 any()의 짝으로 기억해두면 필터링 문제에서 자주 씀.
+
 ### 독립된 if 두 개 vs if-elif-else (Day34)
 겉보기엔 비슷해도 **몇 개의 블록이 실행되는지**가 완전히 다름.
 ```python
