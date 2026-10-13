@@ -1,4 +1,4 @@
-## tree 개념 복습
+## Tree 개념 복습 (day34과 유사하지만 좀 다른)
 def tree_count_leaves(tree):
     leaves = 0
 
