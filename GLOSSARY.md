@@ -495,6 +495,27 @@ for s in students:
 - **언제 쓰나:** 단순 변형/필터는 컴프리헨션, if-elif 여러 갈래·중첩 복잡하면 그냥 for문 3줄.
   한 줄로 만드는 게 목적 아님 — **읽기 쉬운 쪽**을 택한다.
 
+### 리스트끼리 `+` — 더하기 아니라 이어붙이기
+```python
+[1] + [2, 3]          # [1, 2, 3]       숫자 더하기 아님! 두 리스트를 연결
+["a"] + ["b", "c"]    # ["a", "b", "c"]
+```
+`result = []; result.append(x)` 대신 `[x] + 나머지리스트`처럼, 리스트를 만들어서 바로 이어붙이는 식으로도 같은 결과를 낼 수 있음.
+
+### 중첩 `for` 컴프리헨션 — "리스트의 리스트" 평평하게 펴기(flatten) (Day37)
+컴프리헨션 안에 `for`를 두 번 쓸 수 있음. **읽는 순서 = 실제 for문 쓸 때랑 똑같이 왼쪽부터 바깥→안쪽.**
+```python
+[v for node in tree["children"] for v in tree_all_values(node)]
+
+# 풀어쓰면:
+result = []
+for node in tree["children"]:         # ① 바깥 루프
+    for v in tree_all_values(node):    # ② 안쪽 루프 (각 자식의 "펼쳐진 값 리스트"를 한 번 더 품)
+        result.append(v)
+```
+- `tree_all_values(node)`가 자식마다 리스트 하나(`[7]`, `[3,9,2]`...)를 만드는데, 그걸 그대로 쌓으면 리스트 안에 리스트로 중첩됨 → `for v in ...`로 한 겹 더 풀어서 평평하게 만드는 것.
+- **일반 관용구로 기억:** `[item for sublist in 리스트의_리스트 for item in sublist]` = "리스트의 리스트 평평하게 펴기(flatten)". `result.extend(...)`를 for 루프 안에서 반복하던 것과 동일한 효과를 한 줄로.
+
 ### 제너레이터 표현식 — 컴프리헨션의 "리스트 안 만드는" 버전
 ```python
 [ tree_search(node, target) for node in tree["children"] ]   # 리스트 컴프리헨션: [ ] → 결과를 리스트로 다 만듦
